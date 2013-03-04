@@ -39,7 +39,6 @@
 
 #include "smsdk_ext.h"
 #include "SQLoader.h"
-#include "smsdk_ext.h"
 #include "sourcehook/sourcehook.h"
 /**
  * @brief Sample implementation of the SDK Extension.

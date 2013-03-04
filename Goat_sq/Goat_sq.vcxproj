@@ -17,10 +17,9 @@
     <ClCompile Include="Natives\SqEvent.cpp" />
     <ClCompile Include="Natives\SqPlayer.cpp" />
     <ClCompile Include="sdk\smsdk_ext.cpp" />
-    <ClCompile Include="SqEnvironment.cpp" />
-    <ClCompile Include="SqGroups.cpp" />
-    <ClCompile Include="SqLoader.cpp" />
-    <ClCompile Include="SqScript.cpp" />
+    <ClCompile Include="VM\SqEnvironment.cpp" />
+    <ClCompile Include="VM\SqGroups.cpp" />
+    <ClCompile Include="VM\SqScript.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="extension.h" />
@@ -30,10 +29,9 @@
     <ClInclude Include="Natives\SqPlayer.h" />
     <ClInclude Include="sdk\smsdk_config.h" />
     <ClInclude Include="sdk\smsdk_ext.h" />
-    <ClInclude Include="SqEnvironment.h" />
-    <ClInclude Include="SqGroups.h" />
-    <ClInclude Include="SqLoader.h" />
-    <ClInclude Include="SqScript.h" />
+    <ClInclude Include="VM\SqEnvironment.h" />
+    <ClInclude Include="VM\SqGroups.h" />
+    <ClInclude Include="VM\SqScript.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{915A34EB-2069-4B44-8507-F5C25D2C700C}</ProjectGuid>
@@ -64,7 +62,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>\Squirrel;\Managers;\Natives;$(IncludePath)</IncludePath>
+    <IncludePath>VM;Squirrel;Managers;Natives;sdk;$(SM15)\public;$(HL2SDKCSS)\public;$(HL2SDKCSS)\public\engine;$(HL2SDKCSS)\public\game\server;$(HL2SDKCSS)\public\tier0;$(HL2SDKCSS)\public\tier1;$(MMSOURCE19)\core;$(MMSOURCE19)\core\sourcehook;$(IncludePath)</IncludePath>
     <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -84,6 +82,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;SOURCEMOD_BUILD;WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>

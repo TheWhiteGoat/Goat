@@ -42,18 +42,6 @@
     <ClCompile Include="sdk\smsdk_ext.cpp">
       <Filter>SourceMod SDK</Filter>
     </ClCompile>
-    <ClCompile Include="SqScript.cpp">
-      <Filter>Source Files\VM</Filter>
-    </ClCompile>
-    <ClCompile Include="SqEnvironment.cpp">
-      <Filter>Source Files\VM</Filter>
-    </ClCompile>
-    <ClCompile Include="SqGroups.cpp">
-      <Filter>Source Files\VM</Filter>
-    </ClCompile>
-    <ClCompile Include="SqLoader.cpp">
-      <Filter>Source Files\VM</Filter>
-    </ClCompile>
     <ClCompile Include="Managers\EventManager.cpp">
       <Filter>Source Files\Managers</Filter>
     </ClCompile>
@@ -66,6 +54,15 @@
     <ClCompile Include="Natives\SqEntity.cpp">
       <Filter>Source Files\Natives</Filter>
     </ClCompile>
+    <ClCompile Include="VM\SqEnvironment.cpp">
+      <Filter>Source Files\VM</Filter>
+    </ClCompile>
+    <ClCompile Include="VM\SqGroups.cpp">
+      <Filter>Source Files\VM</Filter>
+    </ClCompile>
+    <ClCompile Include="VM\SqScript.cpp">
+      <Filter>Source Files\VM</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="extension.h">
@@ -76,18 +73,6 @@
     </ClInclude>
     <ClInclude Include="sdk\smsdk_ext.h">
       <Filter>SourceMod SDK</Filter>
-    </ClInclude>
-    <ClInclude Include="SqEnvironment.h">
-      <Filter>Header Files\VM</Filter>
-    </ClInclude>
-    <ClInclude Include="SqScript.h">
-      <Filter>Header Files\VM</Filter>
-    </ClInclude>
-    <ClInclude Include="SqGroups.h">
-      <Filter>Header Files\VM</Filter>
-    </ClInclude>
-    <ClInclude Include="SqLoader.h">
-      <Filter>Header Files\VM</Filter>
     </ClInclude>
     <ClInclude Include="Managers\EventManager.h">
       <Filter>Header Files\Managers</Filter>
@@ -100,6 +85,15 @@
     </ClInclude>
     <ClInclude Include="Natives\SqPlayer.h">
       <Filter>Header Files\Natives</Filter>
+    </ClInclude>
+    <ClInclude Include="VM\SqEnvironment.h">
+      <Filter>Header Files\VM</Filter>
+    </ClInclude>
+    <ClInclude Include="VM\SqGroups.h">
+      <Filter>Header Files\VM</Filter>
+    </ClInclude>
+    <ClInclude Include="VM\SqScript.h">
+      <Filter>Header Files\VM</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
