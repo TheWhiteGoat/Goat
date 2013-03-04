@@ -22,17 +22,17 @@
     <Filter Include="Source Files\VM">
       <UniqueIdentifier>{2461aa0e-de6f-43e6-925a-c02d838aaf0c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\SQNatives">
-      <UniqueIdentifier>{a1e93676-c264-40ab-b6d1-2b61fbd5e8c7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\SQNatives">
-      <UniqueIdentifier>{7f02e4d6-b3c5-46da-9fd2-ce017fadf240}</UniqueIdentifier>
+    <Filter Include="Header Files\Managers">
+      <UniqueIdentifier>{3ec4d6cb-ec20-4c19-baaf-f4c371557d6c}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Managers">
-      <UniqueIdentifier>{00e755fb-a7ba-4a29-b213-5ca0dc6a148b}</UniqueIdentifier>
+      <UniqueIdentifier>{2c2fc14c-f45e-446c-a279-fc104d4efdfc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Managers">
-      <UniqueIdentifier>{85c14b0b-5cff-41ce-8bcd-4c4781ea72a3}</UniqueIdentifier>
+    <Filter Include="Header Files\Natives">
+      <UniqueIdentifier>{3a9e7265-fad4-4ba1-9d4d-84cc32ec23b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Natives">
+      <UniqueIdentifier>{907286f2-bcda-4102-95dc-9b1f8ba27664}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -51,20 +51,20 @@
     <ClCompile Include="SqGroups.cpp">
       <Filter>Source Files\VM</Filter>
     </ClCompile>
-    <ClCompile Include="SqEntity.cpp">
-      <Filter>Source Files\SQNatives</Filter>
-    </ClCompile>
-    <ClCompile Include="SqPlayer.cpp">
-      <Filter>Source Files\SQNatives</Filter>
-    </ClCompile>
-    <ClCompile Include="SqEvent.cpp">
-      <Filter>Source Files\SQNatives</Filter>
-    </ClCompile>
     <ClCompile Include="SqLoader.cpp">
       <Filter>Source Files\VM</Filter>
     </ClCompile>
-    <ClCompile Include="EventManager.cpp">
+    <ClCompile Include="Managers\EventManager.cpp">
       <Filter>Source Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Natives\SqPlayer.cpp">
+      <Filter>Source Files\Natives</Filter>
+    </ClCompile>
+    <ClCompile Include="Natives\SqEvent.cpp">
+      <Filter>Source Files\Natives</Filter>
+    </ClCompile>
+    <ClCompile Include="Natives\SqEntity.cpp">
+      <Filter>Source Files\Natives</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -86,20 +86,31 @@
     <ClInclude Include="SqGroups.h">
       <Filter>Header Files\VM</Filter>
     </ClInclude>
-    <ClInclude Include="SqEntity.h">
-      <Filter>Header Files\SQNatives</Filter>
-    </ClInclude>
-    <ClInclude Include="SqPlayer.h">
-      <Filter>Header Files\SQNatives</Filter>
-    </ClInclude>
-    <ClInclude Include="SqEvent.h">
-      <Filter>Header Files\SQNatives</Filter>
-    </ClInclude>
     <ClInclude Include="SqLoader.h">
       <Filter>Header Files\VM</Filter>
     </ClInclude>
-    <ClInclude Include="EventManager.h">
+    <ClInclude Include="Managers\EventManager.h">
       <Filter>Header Files\Managers</Filter>
     </ClInclude>
+    <ClInclude Include="Natives\SqEntity.h">
+      <Filter>Header Files\Natives</Filter>
+    </ClInclude>
+    <ClInclude Include="Natives\SqEvent.h">
+      <Filter>Header Files\Natives</Filter>
+    </ClInclude>
+    <ClInclude Include="Natives\SqPlayer.h">
+      <Filter>Header Files\Natives</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="GPLv2.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="GPLv3.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="LICENSE.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

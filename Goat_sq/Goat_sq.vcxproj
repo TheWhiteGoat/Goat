@@ -12,28 +12,33 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="extension.cpp" />
+    <ClCompile Include="Managers\EventManager.cpp" />
+    <ClCompile Include="Natives\SqEntity.cpp" />
+    <ClCompile Include="Natives\SqEvent.cpp" />
+    <ClCompile Include="Natives\SqPlayer.cpp" />
     <ClCompile Include="sdk\smsdk_ext.cpp" />
-    <ClCompile Include="SqEntity.cpp" />
     <ClCompile Include="SqEnvironment.cpp" />
-    <ClCompile Include="SqEvent.cpp" />
-    <ClCompile Include="EventManager.cpp" />
     <ClCompile Include="SqGroups.cpp" />
     <ClCompile Include="SqLoader.cpp" />
-    <ClCompile Include="SqPlayer.cpp" />
     <ClCompile Include="SqScript.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="extension.h" />
+    <ClInclude Include="Managers\EventManager.h" />
+    <ClInclude Include="Natives\SqEntity.h" />
+    <ClInclude Include="Natives\SqEvent.h" />
+    <ClInclude Include="Natives\SqPlayer.h" />
     <ClInclude Include="sdk\smsdk_config.h" />
     <ClInclude Include="sdk\smsdk_ext.h" />
-    <ClInclude Include="SqEntity.h" />
     <ClInclude Include="SqEnvironment.h" />
-    <ClInclude Include="SqEvent.h" />
-    <ClInclude Include="EventManager.h" />
     <ClInclude Include="SqGroups.h" />
     <ClInclude Include="SqLoader.h" />
-    <ClInclude Include="SqPlayer.h" />
     <ClInclude Include="SqScript.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="GPLv2.txt" />
+    <Text Include="GPLv3.txt" />
+    <Text Include="LICENSE.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{915A34EB-2069-4B44-8507-F5C25D2C700C}</ProjectGuid>
@@ -64,8 +69,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>F:\Programming\SM EXT SDK\mmsource-1-9-mmsource-1.9.2\core;F:\Programming\Goat\Goat_sq\Goat_sq\Squirrel;F:\Programming\SM EXT SDK\sourcemod-central-21dfb9897341\public;F:\Programming\SM EXT SDK\sourcemod-central-21dfb9897341\public\sourcepawn;F:\Programming\SM EXT SDK\sourcemod-central-21dfb9897341\public\extensions;F:\Programming\SM EXT SDK\mmsource-1-9-mmsource-1.9.2\core\sourcehook;F:\Programming\SM EXT SDK\sourcemod-central-21dfb9897341\core;F:\Programming\SM EXT SDK\hl2sdk-ob-valve-a8e461fbcc9d;F:\Programming\SM EXT SDK\hl2sdk-ob-valve-a8e461fbcc9d\public;F:\Programming\SM EXT SDK\hl2sdk-ob-valve-a8e461fbcc9d\public\engine;F:\Programming\SM EXT SDK\hl2sdk-ob-valve-a8e461fbcc9d\public\tier1;F:\Programming\SM EXT SDK\hl2sdk-ob-valve-a8e461fbcc9d\public\tier0;F:\Programming\SM EXT SDK\hl2sdk-ob-valve-a8e461fbcc9d\tier1;F:\Programming\SM EXT SDK\hl2sdk-ob-valve-a8e461fbcc9d\public\vstdlib;F:\Programming\SM EXT SDK\hl2sdk-ob-valve-a8e461fbcc9d\game\shared;F:\Programming\Goat\Goat_sq\Goat_sq\sdk;$(IncludePath)</IncludePath>
-    <LibraryPath>F:\Programming\SM EXT SDK\hl2sdk-ob-valve-a8e461fbcc9d\lib\public;$(LibraryPath)</LibraryPath>
+    <IncludePath>\Squirrel;\Managers;\Natives;$(IncludePath)</IncludePath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
