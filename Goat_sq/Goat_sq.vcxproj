@@ -17,6 +17,7 @@
     <ClCompile Include="Natives\SqEvent.cpp" />
     <ClCompile Include="Natives\SqPlayer.cpp" />
     <ClCompile Include="sdk\smsdk_ext.cpp" />
+    <ClCompile Include="SqLoader.cpp" />
     <ClCompile Include="VM\SqEnvironment.cpp" />
     <ClCompile Include="VM\SqGroups.cpp" />
     <ClCompile Include="VM\SqScript.cpp" />
@@ -29,6 +30,7 @@
     <ClInclude Include="Natives\SqPlayer.h" />
     <ClInclude Include="sdk\smsdk_config.h" />
     <ClInclude Include="sdk\smsdk_ext.h" />
+    <ClInclude Include="SqLoader.h" />
     <ClInclude Include="VM\SqEnvironment.h" />
     <ClInclude Include="VM\SqGroups.h" />
     <ClInclude Include="VM\SqScript.h" />
@@ -62,8 +64,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>VM;Squirrel;Managers;Natives;sdk;$(SM15)\public;$(HL2SDKCSS)\public;$(HL2SDKCSS)\public\engine;$(HL2SDKCSS)\public\game\server;$(HL2SDKCSS)\public\tier0;$(HL2SDKCSS)\public\tier1;$(MMSOURCE19)\core;$(MMSOURCE19)\core\sourcehook;$(IncludePath)</IncludePath>
-    <LibraryPath>$(LibraryPath)</LibraryPath>
+    <IncludePath>VM;Squirrel;Managers;Natives;sdk;$(SM15)\public\sourcepawn;$(SM15)\public;$(HL2SDKCSS)\public;$(HL2SDKCSS)\public\engine;$(HL2SDKCSS)\public\game\server;$(HL2SDKCSS)\public\tier0;$(HL2SDKCSS)\public\tier1;$(MMSOURCE19)\core;$(MMSOURCE19)\core\sourcehook;$(IncludePath)</IncludePath>
+    <LibraryPath>$(HL2SDKCSS)\lib\public;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

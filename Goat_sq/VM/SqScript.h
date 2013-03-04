@@ -3,8 +3,7 @@
 
 
 #include <squirrel.h>
-//#include "SqEnvironment.h"
-#include "sqhelper.h"
+#include <sqhelper.h>
 #include "smsdk_ext.h"
 
 struct SQClassName{

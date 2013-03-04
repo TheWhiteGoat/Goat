@@ -1,6 +1,11 @@
-#include "SqEvent.h"
+/*
+*
+*	This file is licensed under the GNU GPLv3
+*	All the licenses are located at the root folder
+*
+*/
 
-SH_DECL_HOOK2(IGameEventManager2, FireEvent, SH_NOATTRIB, 0, bool, IGameEvent *, bool);
+#include "SqEvent.h"
 
 SQInteger Native_HookEvent(HSQUIRRELVM vm)
 {
@@ -10,8 +15,6 @@ SQInteger Native_HookEvent(HSQUIRRELVM vm)
 
 SqEvent::SqEvent()
 {
-	SH_ADD_HOOK_MEMFUNC(IGameEventManager2, FireEvent, gameevents, this, &SqEvent::OnFireEvent, false);
-	SH_ADD_HOOK_MEMFUNC(IGameEventManager2, FireEvent, gameevents, this, &SqEvent::OnFireEvent_Post, true);
 }
 
 

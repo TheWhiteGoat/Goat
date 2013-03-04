@@ -1,3 +1,10 @@
+/*
+*
+*	This file is licensed under the GNU GPLv3
+*	All the licenses are located at the root folder
+*
+*/
+
 #include "SqEntity.h"
 
 

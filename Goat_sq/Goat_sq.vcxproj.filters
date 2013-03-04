@@ -63,6 +63,9 @@
     <ClCompile Include="VM\SqScript.cpp">
       <Filter>Source Files\VM</Filter>
     </ClCompile>
+    <ClCompile Include="SqLoader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="extension.h">
@@ -94,6 +97,9 @@
     </ClInclude>
     <ClInclude Include="VM\SqScript.h">
       <Filter>Header Files\VM</Filter>
+    </ClInclude>
+    <ClInclude Include="SqLoader.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

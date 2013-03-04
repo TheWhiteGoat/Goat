@@ -30,7 +30,6 @@
  */
 
 #include "extension.h"
-#include <IConCmdManager.h>
 //#include <iserverunknown.h>
 
 /**
@@ -43,35 +42,27 @@ SQLoader * g_pSqLoader;
 SMEXT_LINK(&g_Goat);
 //CON_COMMAND(testt,testtt);
 
-IVEngineServer * g_engine;
-IServerGameDLL * g_iserver;
-ICvar * icvar;
+
 bool Goat::SDK_OnLoad(char *error, size_t maxleng, bool late)
 {
-	g_pSM->LogMessage(myself,"Goat is being loaded");
-	//SM_GET_IFACE(CONCMDMANAGER,g_CmdMngr);
-	
-	//g_CmdMngr->AddCommandListener(new MyList());
 	return true;
 }
 
 bool SDK_OnMetamodLoad(ISmmAPI *ismm, char *error, size_t maxlen, bool late)
 {
-	//PLUGIN_SAVEVARS();
-	//GET_V_IFACE_ANY(GetServerFactory, g_iserver, IServerGameDLL, INTERFACEVERSION_SERVERGAMEDLL);
-	//GET_V_IFACE_ANY(GetEngineFactory, g_engine, IVEngineServer, INTERFACEVERSION_VENGINESERVER);
-	//GET_V_IFACE_ANY(GetEngineFactory, icvar, ICvar, CVAR_INTERFACE_VERSION);
-	//handlesys->CreateType(
 	return true;
 }
 
 void Goat::SDK_OnAllLoaded()
 {
+
+
 	g_pSM->LogMessage(myself,"Goat starts loading plugins");
 	g_pSqLoader = new SQLoader();
 	g_pSqLoader->LoadConsts();
 	g_pSqLoader->LoadNatives();
 	g_pSqLoader->LoadScripts();
+
 }
 
 void Goat::SDK_OnUnload()
