@@ -61,7 +61,7 @@ bool SDK_OnMetamodLoad(ISmmAPI *ismm, char *error, size_t maxlen, bool late)
 	//GET_V_IFACE_ANY(GetServerFactory, g_iserver, IServerGameDLL, INTERFACEVERSION_SERVERGAMEDLL);
 	//GET_V_IFACE_ANY(GetEngineFactory, g_engine, IVEngineServer, INTERFACEVERSION_VENGINESERVER);
 	//GET_V_IFACE_ANY(GetEngineFactory, icvar, ICvar, CVAR_INTERFACE_VERSION);
-	handlesys->CreateType(
+	//handlesys->CreateType(
 	return true;
 }
 
