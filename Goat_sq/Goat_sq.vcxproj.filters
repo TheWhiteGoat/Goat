@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="SourceMod SDK">
+      <UniqueIdentifier>{756bec42-907f-4d5f-8f6a-d6fbfcce0f1f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\VM">
+      <UniqueIdentifier>{a1866736-6301-47eb-af41-3148c8f1c4d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\VM">
+      <UniqueIdentifier>{2461aa0e-de6f-43e6-925a-c02d838aaf0c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\SQNatives">
+      <UniqueIdentifier>{a1e93676-c264-40ab-b6d1-2b61fbd5e8c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\SQNatives">
+      <UniqueIdentifier>{7f02e4d6-b3c5-46da-9fd2-ce017fadf240}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Managers">
+      <UniqueIdentifier>{00e755fb-a7ba-4a29-b213-5ca0dc6a148b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Managers">
+      <UniqueIdentifier>{85c14b0b-5cff-41ce-8bcd-4c4781ea72a3}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="extension.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="sdk\smsdk_ext.cpp">
+      <Filter>SourceMod SDK</Filter>
+    </ClCompile>
+    <ClCompile Include="SqScript.cpp">
+      <Filter>Source Files\VM</Filter>
+    </ClCompile>
+    <ClCompile Include="SqEnvironment.cpp">
+      <Filter>Source Files\VM</Filter>
+    </ClCompile>
+    <ClCompile Include="SqGroups.cpp">
+      <Filter>Source Files\VM</Filter>
+    </ClCompile>
+    <ClCompile Include="SqEntity.cpp">
+      <Filter>Source Files\SQNatives</Filter>
+    </ClCompile>
+    <ClCompile Include="SqPlayer.cpp">
+      <Filter>Source Files\SQNatives</Filter>
+    </ClCompile>
+    <ClCompile Include="SqEvent.cpp">
+      <Filter>Source Files\SQNatives</Filter>
+    </ClCompile>
+    <ClCompile Include="SqLoader.cpp">
+      <Filter>Source Files\VM</Filter>
+    </ClCompile>
+    <ClCompile Include="EventManager.cpp">
+      <Filter>Source Files\Managers</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="extension.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\smsdk_config.h">
+      <Filter>SourceMod SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\smsdk_ext.h">
+      <Filter>SourceMod SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="SqEnvironment.h">
+      <Filter>Header Files\VM</Filter>
+    </ClInclude>
+    <ClInclude Include="SqScript.h">
+      <Filter>Header Files\VM</Filter>
+    </ClInclude>
+    <ClInclude Include="SqGroups.h">
+      <Filter>Header Files\VM</Filter>
+    </ClInclude>
+    <ClInclude Include="SqEntity.h">
+      <Filter>Header Files\SQNatives</Filter>
+    </ClInclude>
+    <ClInclude Include="SqPlayer.h">
+      <Filter>Header Files\SQNatives</Filter>
+    </ClInclude>
+    <ClInclude Include="SqEvent.h">
+      <Filter>Header Files\SQNatives</Filter>
+    </ClInclude>
+    <ClInclude Include="SqLoader.h">
+      <Filter>Header Files\VM</Filter>
+    </ClInclude>
+    <ClInclude Include="EventManager.h">
+      <Filter>Header Files\Managers</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
