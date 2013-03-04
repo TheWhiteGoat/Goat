@@ -35,11 +35,6 @@
     <ClInclude Include="SqLoader.h" />
     <ClInclude Include="SqScript.h" />
   </ItemGroup>
-  <ItemGroup>
-    <Text Include="GPLv2.txt" />
-    <Text Include="GPLv3.txt" />
-    <Text Include="LICENSE.txt" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{915A34EB-2069-4B44-8507-F5C25D2C700C}</ProjectGuid>
     <RootNamespace>Goat_sq</RootNamespace>

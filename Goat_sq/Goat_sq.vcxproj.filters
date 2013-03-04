@@ -102,15 +102,4 @@
       <Filter>Header Files\Natives</Filter>
     </ClInclude>
   </ItemGroup>
-  <ItemGroup>
-    <Text Include="GPLv2.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="GPLv3.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="LICENSE.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-  </ItemGroup>
 </Project>
