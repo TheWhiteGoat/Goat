@@ -21,6 +21,7 @@ private:
 	SqGroups * m_pGroups;
 public:
 	SQLoader(void);
+	bool Init();
 	bool LoadConsts();
 	bool LoadNatives();
 	bool LoadScripts();

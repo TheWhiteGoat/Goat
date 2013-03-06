@@ -7,6 +7,8 @@
 
 #include "EventManager.h"
 
+EventManager * g_EventManager;
+
 SH_DECL_HOOK2(IGameEventManager2, FireEvent, SH_NOATTRIB, 0, bool, IGameEvent *, bool);
 
 EventManager::EventManager(void)
@@ -17,8 +19,8 @@ EventManager::EventManager(void)
 
 bool EventManager::AddEventListener(IEventListener *listener)
 {
-	if(m_EventListenerList.find(listener))
-		return false;
+	/*if(m_EventListenerList.find(listener))
+		return false;*/
 
 	m_EventListenerList.push_back(listener);
 	return true;
@@ -39,7 +41,9 @@ bool EventManager::OnFireEvent(IGameEvent *pEvent, bool bDontBroadcast)
 	{
 		EventListenerList::iterator it;
 		for(it = m_EventListenerList.begin(); it!=m_EventListenerList.end(); it++)
+		{
 			(*it)->OnFireEvent(pEvent,bDontBroadcast);
+		}
 	}
 	return true;
 }

@@ -117,16 +117,13 @@ bool SqScript::GetObject(SQChar * name,HSQOBJECT *obj)
 
 bool SqScript::RegisterFunction(const SQChar *name,SQFUNCTION func,int nParams,const char * sPparamsTemplate)
 {
-    bool success = false;
-
     sq_pushstring(m_vm,name,-1);
     sq_newclosure(m_vm,func,0);
 
 	if(sPparamsTemplate && sPparamsTemplate[0] != '\0')
 		sq_setparamscheck(m_vm,nParams,sPparamsTemplate);
 
-    success = SQ_SUCCEEDED(sq_newslot(m_vm,-3,SQFalse));
-    return success;
+    return SQ_SUCCEEDED(sq_newslot(m_vm,-3,SQFalse));
 }
 
 bool SqScript::RegisterConst(const SQChar *name,HSQOBJECT arg)

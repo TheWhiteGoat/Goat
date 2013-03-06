@@ -56,9 +56,10 @@ bool SDK_OnMetamodLoad(ISmmAPI *ismm, char *error, size_t maxlen, bool late)
 void Goat::SDK_OnAllLoaded()
 {
 
-
+	getchar();
 	g_pSM->LogMessage(myself,"Goat starts loading plugins");
 	g_pSqLoader = new SQLoader();
+	g_pSqLoader->Init();
 	g_pSqLoader->LoadConsts();
 	g_pSqLoader->LoadNatives();
 	g_pSqLoader->LoadScripts();

@@ -14,13 +14,16 @@ struct SQClassName{
 
 class SqScript
 {
-    private:
+protected:
         HSQUIRRELVM m_vm;
         HSQOBJECT m_handle;
 		bool m_bReleasHandle;
-    public:
+public:
         SqScript(HSQUIRRELVM vm, HSQOBJECT handle);
-		SqScript::SqScript(HSQUIRRELVM vm);
+		SqScript(HSQUIRRELVM vm);
+protected: 
+	SqScript(){ }
+public:
 		~SqScript(void);
 
 		HSQUIRRELVM GetVM(){return m_vm;}

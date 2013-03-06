@@ -5,17 +5,13 @@
 
 using namespace std;
 
-SqEnvironment::SqEnvironment()
+SqEnvironment::SqEnvironment() : SqScript()
 {
-	m_bHandleSet = false;
-	m_vm = NULL;
+	m_bReleasHandle = false;
 }
 
-SqEnvironment::SqEnvironment(HSQUIRRELVM vm, HSQOBJECT handle)
+SqEnvironment::SqEnvironment(HSQUIRRELVM vm, HSQOBJECT handle) : SqScript(vm,handle)
 {
-	m_vm = vm;
-	m_handle = handle;
-	m_bHandleSet = true;
 }
 
 bool SqEnvironment::Initialize(int stack)
@@ -43,7 +39,6 @@ SqEnvironment *SqEnvironment::CreateFriendVM(int stack)
         sq_getstackobj(m_vm, -1, &handle);
         sq_addref(m_vm, &handle);
         sq_pop(m_vm, 1);
-		//sq_newtable(vm);
 		return new SqEnvironment(vm,handle);
 	}
 	return NULL;

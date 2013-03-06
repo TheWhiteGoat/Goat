@@ -16,8 +16,8 @@ using namespace SourceHook;
 class IEventListener
 {
 public:
-	bool OnFireEvent(IGameEvent *pEvent, bool bDontBroadcast) {return true; }
-	bool OnFireEvent_Post(IGameEvent *pEvent, bool bDontBroadcast){return true; }
+	virtual bool OnFireEvent(IGameEvent *pEvent, bool bDontBroadcast){return true; }
+	virtual bool OnFireEvent_Post(IGameEvent *pEvent, bool bDontBroadcast){return true; }
 };
 
 class EventManager
@@ -36,3 +36,4 @@ public:
 	~EventManager(void);
 };
 
+extern EventManager* g_EventManager;

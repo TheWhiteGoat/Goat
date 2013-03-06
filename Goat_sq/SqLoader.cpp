@@ -6,6 +6,7 @@
 */
 
 #include "SQLoader.h"
+#include "SqEvent.h"
 
 SQLoader::SQLoader(void)
 {
@@ -41,16 +42,8 @@ SQLoader::SQLoader(void)
 	}
 }*/
 
-bool SQLoader::LoadScripts()
+bool SQLoader::Init()
 {
-	char path[PLATFORM_MAX_PATH];
-	if(!g_pSM->BuildPath(PathType::Path_SM,path,sizeof(path),"plugins/squirrel"))
-		return false;
-	g_pSM->LogMessage(myself,path);
-
-	libsys->CreateFolder(path);
-
-	//g_pSM->LogMessage(myself,path);
 	m_pGroups = new SqGroups();
 	m_pRootEnviroment = new SqEnvironment();
 	if(!m_pRootEnviroment->Initialize())
@@ -60,8 +53,17 @@ bool SQLoader::LoadScripts()
 	}
 
 	m_pGroups->AddGroup("root",m_pRootEnviroment);
-	//Test(path);
-	//return true;
+	return true;
+}
+
+bool SQLoader::LoadScripts()
+{
+	char path[MAX_PATH];
+	if(!g_pSM->BuildPath(PathType::Path_SM,path,sizeof(path),"plugins/squirrel"))
+		return false;
+	g_pSM->LogMessage(myself,path);
+
+	libsys->CreateFolder(path);
 	return RecursiveFolderLoading(path,true,"root");
 }
 
@@ -73,7 +75,11 @@ bool SQLoader::LoadConsts()
 
 bool SQLoader::LoadNatives()
 {
-
+	if(!SqEvent::RegisterNatives(m_pRootEnviroment))
+	{
+		g_pSM->LogError(myself,"Failed adding event natives");
+		return false;
+	}
 	return true;
 }
 

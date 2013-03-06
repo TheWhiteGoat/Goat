@@ -62,7 +62,7 @@ static T sq_getinstance(SQVM * pVM, int iIndex = 1)
 
 using namespace std;
 
-class SqEnvironment
+class SqEnvironment : public SqScript
 {
     protected:
         static void PrintFunc(HSQUIRRELVM vm, const SQChar *str, ...);
@@ -71,9 +71,8 @@ class SqEnvironment
         static SQInteger file_lexfeedASCII(SQUserPointer file);
         static void CompileErrorFunc(HSQUIRRELVM v,const SQChar * desc,const SQChar *source,SQInteger line,SQInteger column);
 
-		HSQOBJECT m_handle;
-		bool m_bHandleSet;
-		HSQUIRRELVM m_vm;
+		//bool m_bHandleSet;
+		//HSQUIRRELVM m_vm;
 
 		//list<SqScript*> m_scripts;
 		//SqScript* m_pScript;
@@ -88,7 +87,7 @@ class SqEnvironment
         void Uninitialize(void);
 
         HSQUIRRELVM GetVM(){return m_vm;}
-		SqScript * toScript(){return new SqScript(m_vm);}
+		//SqScript * toScript(){return this;}
 		SqEnvironment * CreateFriendVM(int stack = 1024);
 
 		SqScript* CreateScript(const char *name);
