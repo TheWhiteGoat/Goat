@@ -23,6 +23,7 @@ SqGroups::~SqGroups(void)
 		for(list<SqGroup *>::iterator it = m_pEnviromentList.begin(); it!=m_pEnviromentList.end();it++)
 		{
 			delete (*it)->groupname;
+			(*it)->env->Uninitialize();
 			delete (*it)->env;
 		}
 }

@@ -37,6 +37,7 @@ bool EventManager::RemoveEventListener(IEventListener *listener)
 
 bool EventManager::OnFireEvent(IGameEvent *pEvent, bool bDontBroadcast)
 {
+	rootconsole->ConsolePrint("EVENT IS: %s",pEvent->GetName());
 	if(m_EventListenerList.size() > 0)
 	{
 		EventListenerList::iterator it;

@@ -8,12 +8,14 @@ SqScript::SqScript(HSQUIRRELVM vm, HSQOBJECT handle)
     m_vm = vm;
     m_handle = handle;
 	m_bReleasHandle = true;
+	g_ScriptManager.RegisterScript(vm,m_handle);
 }
 
 SqScript::SqScript(HSQUIRRELVM vm)
 {
     m_vm = vm;
 	m_bReleasHandle = false;
+	g_ScriptManager.RegisterScript(vm);
 }
 
 bool SqScript::Run(const SQChar *pFunc,bool bReturn, HSQOBJECT* phReturnObj,const char *pFormat, ...)

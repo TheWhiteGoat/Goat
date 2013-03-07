@@ -13,6 +13,7 @@
   <ItemGroup>
     <ClCompile Include="extension.cpp" />
     <ClCompile Include="Managers\EventManager.cpp" />
+    <ClCompile Include="Managers\ScriptManager.cpp" />
     <ClCompile Include="Natives\SqEntity.cpp" />
     <ClCompile Include="Natives\SqEvent.cpp" />
     <ClCompile Include="Natives\SqPlayer.cpp" />
@@ -25,6 +26,7 @@
   <ItemGroup>
     <ClInclude Include="extension.h" />
     <ClInclude Include="Managers\EventManager.h" />
+    <ClInclude Include="Managers\ScriptManager.h" />
     <ClInclude Include="Natives\SqEntity.h" />
     <ClInclude Include="Natives\SqEvent.h" />
     <ClInclude Include="Natives\SqPlayer.h" />

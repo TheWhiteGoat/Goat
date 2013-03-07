@@ -64,7 +64,7 @@ using namespace std;
 
 class SqEnvironment : public SqScript
 {
-    protected:
+protected:
         static void PrintFunc(HSQUIRRELVM vm, const SQChar *str, ...);
 		static SQInteger RuntimeErrorFunc(HSQUIRRELVM vm);
         static void ErrorFunc(HSQUIRRELVM vm, const SQChar *str, ...);

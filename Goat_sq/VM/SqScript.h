@@ -5,6 +5,7 @@
 #include <squirrel.h>
 #include <sqhelper.h>
 #include "smsdk_ext.h"
+#include "ScriptManager.h"
 
 struct SQClassName{
 	SQChar * classname;

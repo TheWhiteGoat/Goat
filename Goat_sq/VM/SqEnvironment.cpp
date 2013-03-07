@@ -67,9 +67,6 @@ SqScript *SqEnvironment::CreateScript(const char *name)
 				#ifdef SMLOG
 				g_pSM->LogMessage(myself,"The script %s was loaded",name);
 				#endif
-				//SqScript * tmp = new SqScript(vm, handle);
-				//m_scripts.push_front(tmp);
-				//return tmp;
 				return new SqScript(vm, handle);
             }
         }
@@ -216,6 +213,8 @@ void SqEnvironment::DestroyScript(SqScript *pScript)
 
 void SqEnvironment::Uninitialize()
 {
+	if(m_bReleasHandle)
+		sq_release(m_vm,&m_handle);
     sq_close(m_vm);
 }
 
