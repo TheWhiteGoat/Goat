@@ -8,13 +8,14 @@
 #pragma once
 
 #include "SqEnvironment.h"
+#include "SqGroups.h"
 #include <iservernetworkable.h>
 #include <IServerUnknown.h>
 
 class SqEntity
 {
 public:
-	static bool RegisterNatives(SqScript * pScript);
+	static bool RegisterNatives(SqGroups * pGroups);
 	static edict_t * BaseEntityToEdict(CBaseEntity *pEntity);
 	//SqEntity(void);
 	//~SqEntity(void);

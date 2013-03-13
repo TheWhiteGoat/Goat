@@ -7,6 +7,8 @@
 
 #include "SQLoader.h"
 #include "SqEvent.h"
+#include "SqEntity.h"
+#include "SqPlayer.h"
 
 SQLoader::SQLoader(void)
 {
@@ -75,7 +77,17 @@ bool SQLoader::LoadConsts()
 
 bool SQLoader::LoadNatives()
 {
-	if(!SqEvent::RegisterNatives(m_pRootEnviroment))
+	if(!SqEvent::RegisterNatives(m_pGroups))
+	{
+		g_pSM->LogError(myself,"Failed adding event natives");
+		return false;
+	}
+	if(!SqEntity::RegisterNatives(m_pGroups))
+	{
+		g_pSM->LogError(myself,"Failed adding event natives");
+		return false;
+	}
+	if(!SqPlayer::RegisterNatives(m_pGroups))
 	{
 		g_pSM->LogError(myself,"Failed adding event natives");
 		return false;
@@ -122,15 +134,16 @@ bool SQLoader::RecursiveFolderLoading(const char * path,bool rootfolder,char * g
 				
 					if(env == NULL && !rootfolder)
 					{
-						env = m_pRootEnviroment->CreateFriendVM();
+						env = new SqEnvironment();
 						env->Initialize();
-					}
-
-					if(rootfolder)
-						m_pRootEnviroment->CreateScript(completepath.data());
-					else
+						m_pGroups->AddGroup(group,env);
 						env->LoadLibrary(completepath.data());
-					
+					}
+					else if(rootfolder)
+					{
+						m_pRootEnviroment->CreateScript(completepath.data());
+					}
+						
 					completepath.clear();
 				}
 			}
@@ -145,8 +158,8 @@ bool SQLoader::RecursiveFolderLoading(const char * path,bool rootfolder,char * g
 		}
 		dir->NextEntry();
 	}
-	if(env && !rootfolder)
-		m_pGroups->AddGroup(group,env);
+	//if(env && !rootfolder)
+		//m_pGroups->AddGroup(group,env);
 	
 	return true;
 }

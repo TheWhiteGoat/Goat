@@ -39,6 +39,7 @@ SqEnvironment *SqEnvironment::CreateFriendVM(int stack)
         sq_getstackobj(m_vm, -1, &handle);
         sq_addref(m_vm, &handle);
         sq_pop(m_vm, 1);
+		sq_pushroottable(vm);
 		return new SqEnvironment(vm,handle);
 	}
 	return NULL;
@@ -47,10 +48,10 @@ SqEnvironment *SqEnvironment::CreateFriendVM(int stack)
 SqScript *SqEnvironment::CreateScript(const char *name)
 {
     HSQUIRRELVM vm = sq_newthread(m_vm, 1024);
-    //HSQUIRRELVM vm = m_vm;
     if (vm)
     {
         sq_newtable(vm);
+		//sq_pushroottable(vm);
         if (LoadFile(vm, name))
         {
             sq_push(vm, -2);
@@ -63,7 +64,6 @@ SqScript *SqEnvironment::CreateScript(const char *name)
                 sq_getstackobj(m_vm, -1, &handle);
                 sq_addref(m_vm, &handle);
                 sq_pop(m_vm, 1);
-
 				#ifdef SMLOG
 				g_pSM->LogMessage(myself,"The script %s was loaded",name);
 				#endif
@@ -81,29 +81,13 @@ bool SqEnvironment::LoadLibrary(const char *filename)
 {
     bool success = false;
     int top = sq_gettop(m_vm);
-    //sq_pushroottable(m_vm);
 
     if (LoadFile(m_vm, filename))
     {
 		sq_push(m_vm, -2);
 		success = SQ_SUCCEEDED(sq_call(m_vm, 1, SQFalse, SQTrue));
-		/*if(!cacheclosure)
-		{
-			sq_push(m_vm, -2);
-			success = SQ_SUCCEEDED(sq_call(m_vm, 1, SQFalse, SQTrue));
-		}
-		else
-		{
-			HSQOBJECT * obj = new HSQOBJECT;
-			sq_resetobject(obj);
-			if((success = SQ_SUCCEEDED(sq_getstackobj(m_vm,-1,obj))))
-			{
-				sq_addref(m_vm,obj);//so the garbage collector won't cleanup the object
-				m_ClosuresRunList.push_front(obj);
-			}
-		}*/
 		#ifdef SMLOG
-		g_pSM->LogMessage(myself,"LoadLIbrary: %s",filename);
+		g_pSM->LogMessage(myself,"LoadLibrary: %s",filename);
 		#endif
     }
 
@@ -211,18 +195,7 @@ void SqEnvironment::DestroyScript(SqScript *pScript)
     delete pScript;
 }
 
-void SqEnvironment::Uninitialize()
-{
-	if(m_bReleasHandle)
-		sq_release(m_vm,&m_handle);
-    sq_close(m_vm);
-}
-
 SqEnvironment::~SqEnvironment()
 {
-	/*if(m_scripts.size() > 0)
-		for(list<SqScript*>::iterator it = m_scripts.begin(); it != m_scripts.end(); it++)
-			delete *it;*/
-
-    //Uninitialize();
+	sq_close(m_vm);
 }

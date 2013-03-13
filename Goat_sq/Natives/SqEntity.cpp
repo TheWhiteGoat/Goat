@@ -71,7 +71,8 @@ SQ_CLASS_FUNC(Entity,index,1,".")
 //SQ_CLASS_FUNC(Entity,toPlayer,1,".")
 SQ_CLASS_BUILD_END(Entity)
 
-bool SqEntity::RegisterNatives(SqScript * pScript)
+bool SqEntity::RegisterNatives(SqGroups * pGroups)
 {
-	return pScript->RegisterClass(&SQ_CLASS_GET(Entity));
+	pGroups->RegisterClass(&SQ_CLASS_GET(Entity));
+	return true;
 }

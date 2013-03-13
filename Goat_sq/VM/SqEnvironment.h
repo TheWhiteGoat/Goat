@@ -7,18 +7,23 @@
 
 #define SMLOG // to log some script actions
 
+
+
 #define SQ_CLASS_BUILD_START(classname)\
 	SQInteger _SQ_CLASSMEMBER_##classname##_typeof(SQVM * pVM) \
 	{ \
 		sq_pushstring(pVM, #classname, -1); \
 		return 1; \
 	} \
-	SQRegFunction _SQ_CLASS_##classname## [] =\
+	SqRefFunctionEx _SQ_CLASS_##classname## [] =\
 	{\
 		{ "_typeof", _SQ_CLASSMEMBER_##classname##_typeof,0,NULL },\
 
 #define SQ_CLASS_FUNC(classname,funcname,nparams,typemask)\
-	{ #funcname,_SQ_CLASSMEMBER_##classname##_##funcname ,nparams,typemask},\
+	{ #funcname,_SQ_CLASSMEMBER_##classname##_##funcname ,nparams,typemask,SQFalse},\
+
+#define SQ_CLASS_FUNC_STATIC(classname,funcname,nparams,typemask)\
+	{ #funcname,_SQ_CLASSMEMBER_##classname##_##funcname ,nparams,typemask,SQTrue},\
 
 #define SQ_CLASS_BUILD_END_BASE(classname,baseclassname)\
 	{NULL,NULL,NULL,NULL}\
@@ -71,6 +76,7 @@ protected:
         static SQInteger file_lexfeedASCII(SQUserPointer file);
         static void CompileErrorFunc(HSQUIRRELVM v,const SQChar * desc,const SQChar *source,SQInteger line,SQInteger column);
 
+		//bool m_bVMSet;
 		//bool m_bHandleSet;
 		//HSQUIRRELVM m_vm;
 
@@ -84,7 +90,7 @@ protected:
 		SqEnvironment(HSQUIRRELVM vm, HSQOBJECT handle);
         ~SqEnvironment(void);
         bool Initialize(int stack = 1024);
-        void Uninitialize(void);
+       // void Uninitialize(void);
 
         HSQUIRRELVM GetVM(){return m_vm;}
 		//SqScript * toScript(){return this;}

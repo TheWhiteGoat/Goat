@@ -3,19 +3,21 @@
 #include <cstddef>
 #include <stdio.h>
 
-SqScript::SqScript(HSQUIRRELVM vm, HSQOBJECT handle)
+SqScript::SqScript(HSQUIRRELVM vm, HSQOBJECT handle, bool Notify)
 {
     m_vm = vm;
     m_handle = handle;
 	m_bReleasHandle = true;
-	g_ScriptManager.RegisterScript(vm,m_handle);
+	if(Notify)
+		g_ScriptManager.RegisterScript(vm,m_handle);
 }
 
-SqScript::SqScript(HSQUIRRELVM vm)
+SqScript::SqScript(HSQUIRRELVM vm, bool Notify)
 {
     m_vm = vm;
 	m_bReleasHandle = false;
-	g_ScriptManager.RegisterScript(vm);
+	if(Notify)
+		g_ScriptManager.RegisterScript(vm);
 }
 
 bool SqScript::Run(const SQChar *pFunc,bool bReturn, HSQOBJECT* phReturnObj,const char *pFormat, ...)
@@ -70,6 +72,7 @@ bool SqScript::RegisterClass(SQClassName * classname)
 	if(!classname)
 		return false;
 
+	bool success = false;
 	int top = sq_gettop(m_vm);
 	sq_pushstring(m_vm, classname->classname, -1);
 	if(classname->baseclassname)
@@ -93,31 +96,28 @@ bool SqScript::RegisterClass(SQClassName * classname)
 		return false;
 	}
 
-	SQRegFunction * funcs = classname->funcs;
+	SqRefFunctionEx * funcs = classname->funcs;
 	for(int i = 0; funcs[i].name; i++)
-		RegisterFunction(funcs[i].name,funcs[i].f,funcs[i].nparamscheck,funcs[i].typemask);
+		RegisterFunction(funcs[i].name,funcs[i].f,funcs[i].nparamscheck,funcs[i].typemask,funcs[i].bstatic);
 
-	sq_newslot(m_vm,-3,SQFalse);
+	success = SQ_SUCCEEDED(sq_newslot(m_vm,-3,SQFalse));
 	sq_settop(m_vm,top);
-	return true;
+	return success;
 }
 
-bool SqScript::GetObject(SQChar * name,HSQOBJECT *obj)
+bool SqScript::GetObject(SQChar * name, HSQOBJECT *obj, int tableidx, int idx)
 {
-	int top = sq_gettop(m_vm);
 	sq_pushstring(m_vm,name,-1);
-	if(SQ_FAILED(sq_get(m_vm,1)))
-	{
-		sq_settop(m_vm,top);
+	if(SQ_FAILED(sq_get(m_vm,tableidx)))
 		return false;
-	}
+
 	sq_resetobject(obj);
-	sq_getstackobj(m_vm,-1,obj);
-	sq_settop(m_vm,top);
+	sq_getstackobj(m_vm,idx,obj);
+	sq_pop(m_vm,1);
 	return true;
 }
 
-bool SqScript::RegisterFunction(const SQChar *name,SQFUNCTION func,int nParams,const char * sPparamsTemplate)
+bool SqScript::RegisterFunction(const SQChar *name,SQFUNCTION func,int nParams,const char * sPparamsTemplate,SQBool bstatic)
 {
     sq_pushstring(m_vm,name,-1);
     sq_newclosure(m_vm,func,0);
@@ -125,7 +125,7 @@ bool SqScript::RegisterFunction(const SQChar *name,SQFUNCTION func,int nParams,c
 	if(sPparamsTemplate && sPparamsTemplate[0] != '\0')
 		sq_setparamscheck(m_vm,nParams,sPparamsTemplate);
 
-    return SQ_SUCCEEDED(sq_newslot(m_vm,-3,SQFalse));
+    return SQ_SUCCEEDED(sq_newslot(m_vm,-3,bstatic));
 }
 
 bool SqScript::RegisterConst(const SQChar *name,HSQOBJECT arg)
@@ -135,8 +135,50 @@ bool SqScript::RegisterConst(const SQChar *name,HSQOBJECT arg)
 	return SQ_SUCCEEDED(sq_newslot(m_vm,-3,SQTrue));
 }
 
-SqScript::~SqScript()
+template <typename T>
+T SqScript::GetProperty(const SQChar * key)
+{
+	sq_pushregistrytable(m_vm);
+	sq_pushstring(vm,key,-1);
+	T userdata = NULL;
+	if(SQ_SUCCEEDED(sq_get(m_vm,-2)))
+	{
+		sq_getuserdata(vm,-1,&userdata,NULL);
+		sq_pop(m_vm,2);
+		return userdata;
+	}
+	sq_pop(vm,1);
+	return NULL;
+}
+
+template <typename T>
+bool SqScript::SetProperty(const SQChar * key, T prop)
+{
+	T userdata = NULL;
+	sq_pushregistrytable(m_vm);
+	sq_pushuserpointer(m_vm,(SQUserPointer)prop);
+	sq_pushstring(m_vm,key,-1);
+	if(SQ_SUCCEEDED(sq_newslot(m_vm,-3)))
+	{
+		sq_pop(m_vm,1);
+		return true;
+	}
+	sq_pop(m_vm,1);
+	return false;
+}
+
+void SqScript::Uninitialize()
 {
 	if(m_bReleasHandle)
+	{
+		g_ScriptManager.NotifyScriptUnloaded(m_vm,m_handle);
 		sq_release(m_vm, &m_handle);
+	}
+	else
+		g_ScriptManager.NotifyScriptUnloaded(m_vm);
+}
+
+SqScript::~SqScript()
+{
+
 }

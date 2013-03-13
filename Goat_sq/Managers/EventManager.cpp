@@ -37,14 +37,12 @@ bool EventManager::RemoveEventListener(IEventListener *listener)
 
 bool EventManager::OnFireEvent(IGameEvent *pEvent, bool bDontBroadcast)
 {
-	rootconsole->ConsolePrint("EVENT IS: %s",pEvent->GetName());
+	//rootconsole->ConsolePrint("EVENT IS: %s",pEvent->GetName());
 	if(m_EventListenerList.size() > 0)
 	{
 		EventListenerList::iterator it;
 		for(it = m_EventListenerList.begin(); it!=m_EventListenerList.end(); it++)
-		{
 			(*it)->OnFireEvent(pEvent,bDontBroadcast);
-		}
 	}
 	return true;
 }

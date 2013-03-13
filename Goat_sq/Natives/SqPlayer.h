@@ -8,12 +8,13 @@
 #pragma once
 
 #include "SqEnvironment.h"
+#include "SqGroups.h"
 
 class SqPlayer
 {
 public:
 	//SqPlayer(void);
-	static bool RegisterNatives(SqScript * pScript);
+	static bool RegisterNatives(SqGroups * pGroups);
 	//~SqPlayer(void);
 };
 
