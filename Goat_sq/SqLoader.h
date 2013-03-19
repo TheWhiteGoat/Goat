@@ -5,26 +5,37 @@
 *
 */
 
-#pragma once
-#include "SqEnvironment.h"
-#include "SqGroups.h"
-#include "smsdk_ext.h"
-#include <stdio.h>
-#include <string.h>
+#ifndef _INCLUDE_SQLOADER_H
+#define _INCLUDE_SQLOADER_H
+
+#include <sqrat.h>
+#include <string>
+#include <list>
+#include "SqLoader.h"
 
 class SQLoader
 {
+	typedef void (*RegisterInVmTD)(Sqrat::Script*);
+	typedef std::list<RegisterInVmTD> RegisteringList;
 protected:
 	bool RecursiveFolderLoading(const char * path, bool rootfolder, char * group);
 private:
-	SqEnvironment * m_pRootEnviroment;
-	SqGroups * m_pGroups;
+	Sqrat::SqratVM *m_pVm;
+	RegisteringList m_ListRegisteringFuncs;
+private:
+	void SetHandlers(Sqrat::SqratVM *vm);
+private:
+	static void PrintFunc(HSQUIRRELVM vm, const SQChar *s, ...);
+	static SQInteger RuntimeErrorFunc(HSQUIRRELVM vm);
+	static void CompileErrorFunc(HSQUIRRELVM v,const SQChar * desc,const SQChar *
+                                     source,SQInteger line,SQInteger column);
+	static void ErrorFunc(HSQUIRRELVM vm, const SQChar *s, ...);
 public:
 	SQLoader(void);
 	bool Init();
-	bool LoadConsts();
-	bool LoadNatives();
+	bool LoadAddons();
 	bool LoadScripts();
 	~SQLoader(void);
 };
 
+#endif

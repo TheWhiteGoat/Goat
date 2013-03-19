@@ -1,119 +1,255 @@
-/*
-*
-*	This file is licensed under the GNU GPLv3
-*	All the licenses are located at the root folder
-*
-*/
-
 #include "SqPlayer.h"
 
 
+#define GETPLAYER \
+IGamePlayer *player = playerhelpers->GetGamePlayer(m_iIndex);\
+	if(player)\
 
-//#define GETINSTANCE int ref = sq_getinstance<int>(vm);
+#define GETINFO \
+	IPlayerInfo *info = player->GetPlayerInfo();\
+	if(info)\
 
-
-SQ_CLASS_FUNC_DEF(Player,constructor)
+SqPlayer::SqPlayer(int index) : SqEntity(index)
 {
-	int index = 0;
-	int ref = 0;
-	bool success = false;
-	if((success = SQ_SUCCEEDED(sq_getinteger(vm,-1,&index))))
-	{
-		ref = gamehelpers->IndexToReference(index);
-		success = SQ_SUCCEEDED(sq_setinstance(vm,ref));
-	}
-	else
-		sq_pop(vm,1);
-
-	sq_pushbool(vm,success);
-	return 1;
 }
 
-SQ_CLASS_FUNC_DEF(Player,HintTextMsg)
-{
-	int ref = sq_getinstance<int>(vm);
-	int index = gamehelpers->ReferenceToIndex(ref);
-	bool success = false;
-	SQChar * msg = NULL;
-	if((success = SQ_SUCCEEDED(sq_getstring(vm,-1,(const SQChar **)&msg))))
-		success = gamehelpers->HintTextMsg(index,msg);
-	else
-		sq_pop(vm,1);
 
-	sq_pushbool(vm,success);
-	return 1;
+SqPlayer::~SqPlayer(void)
+{
 }
 
-SQ_CLASS_FUNC_DEF(Player,TextMsg)
+Sqrat::string SqPlayer::GetName()
 {
-
-	int ref = sq_getinstance<int>(vm);
-	int index = gamehelpers->ReferenceToIndex(ref);
-	int txtdest = 1;
-
-	bool success = false;
-	SQChar * msg = NULL;
-	if((success = SQ_SUCCEEDED(sq_getinteger(vm,-2,&txtdest))))
-		if((success = SQ_SUCCEEDED(sq_getstring(vm,-1,(const SQChar **)&msg))))
-			success = gamehelpers->TextMsg(index,txtdest,msg);
-
-	sq_pop(vm,2);
-	sq_pushbool(vm,success);
-	return 1;
+	GETPLAYER
+		return player->GetName();
+	return "";
 }
 
-SQ_CLASS_FUNC_DEF(Player,GetName)
+Sqrat::string  SqPlayer::GetIPAddress()
 {
+	GETPLAYER
+		return player->GetIPAddress();
+	return "";
+}
 
+Sqrat::string SqPlayer::GetAuthString()
+{
+	GETPLAYER
+		return player->GetAuthString();
+	return "";
+}
+
+bool SqPlayer::IsInGame()
+{
+	GETPLAYER
+		return player->IsInGame();
+	return false;
+}
+
+bool SqPlayer::IsConnected()
+{
+	GETPLAYER
+		return player->IsConnected();
+	return false;
+}
+
+bool SqPlayer::IsFakeClient()
+{
+	GETPLAYER
+		return player->IsFakeClient();
+	return false;
+}
+
+int SqPlayer::GetAdminId() //int for right now
+{
+	GETPLAYER
+		return player->GetAdminId();
+	return -1;
+}
+
+void SqPlayer::SetAdminId(int id, bool temp)
+{
+	GETPLAYER
+		player->SetAdminId(id,temp);
+}
+
+int SqPlayer::GetUserId()
+{
+	GETPLAYER
+		return player->GetUserId();
+	return -1;
+}
+
+int SqPlayer::GetLanguageId()
+{
+	GETPLAYER
+		return player->GetLanguageId();
+	return -1;
+}
+
+bool SqPlayer::RunAdminCacheChecks()
+{
+	GETPLAYER
+		return player->RunAdminCacheChecks();
+	return false;
+}
+
+void SqPlayer::NotifyPostAdminChecks()
+{
+	GETPLAYER
+		player->NotifyPostAdminChecks();
+}
+
+unsigned int SqPlayer::GetSerial()
+{
+	GETPLAYER
+		return player->GetSerial();
 	return 0;
 }
 
-SQ_CLASS_BUILD_START(Player)
-SQ_CLASS_FUNC(Player,constructor,2,".i")
-SQ_CLASS_FUNC(Player,HintTextMsg,2,".s")
-SQ_CLASS_FUNC(Player,TextMsg,3,".is")
-SQ_CLASS_FUNC(Player,GetName,1,".")
-//SQ_CLASS_FUNC(Player,GetIPAddress,1,".")
-//SQ_CLASS_FUNC(Player,GetAuthString,1,".")
-//SQ_CLASS_FUNC(Player,IsInGame,1,".")
-//SQ_CLASS_FUNC(Player,IsConnected,1,".")
-//SQ_CLASS_FUNC(Player,IsFakeClient,1,".")
-//SQ_CLASS_FUNC(Player,GetAdminId,1,".")
-//SQ_CLASS_FUNC(Player,SetAdminId,1,".")
-//SQ_CLASS_FUNC(Player,GetUserId,1,".")
-//SQ_CLASS_FUNC(Player,GetLanguageId,1,".")
-//SQ_CLASS_FUNC(Player,GetSerial,1,".")
-//SQ_CLASS_FUNC(Player,IsAuthorized,1,".")
-//SQ_CLASS_FUNC(Player,Kick,1,".")
-//SQ_CLASS_FUNC(Player,IsInKickQueue,1,".")
-//SQ_CLASS_FUNC(Player,IsSourceTV,1,".")
-//SQ_CLASS_FUNC(Player,IsReplay,1,".")
-SQ_CLASS_BUILD_END_BASE(Player,Entity)
-
-SQInteger Native_IndexFromUserId(HSQUIRRELVM vm)
+bool SqPlayer::IsAuthorized()
 {
-	SQInteger userid = -1;
-	SQInteger index = 0;
-	if(SQ_SUCCEEDED(sq_getinteger(vm,-1,&userid)))
-	{
-		index = playerhelpers->GetClientOfUserId(userid);
-		if(index == 0)
-		{
-			sq_pop(vm,1);
-			return 0;
-		}
-		sq_pop(vm,1);
-		sq_pushinteger(vm,index);
-		return 1;
-
-	}
-	sq_pop(vm,1);
-	return 0;
+	GETPLAYER
+		return player->IsAuthorized();
+	return false;
 }
 
-bool SqPlayer::RegisterNatives(SqGroups * pGroups)
+void SqPlayer::Kick (Sqrat::string message)
 {
-	pGroups->RegisterFunction("IndexFromUserId",Native_IndexFromUserId,2,".i");
-	pGroups->RegisterClass(&SQ_CLASS_GET(Player));
-	return true;
+	GETPLAYER
+		player->Kick(message.data());
+}
+
+bool SqPlayer::IsInKickQueue()
+{
+	GETPLAYER
+		return player->IsInKickQueue();
+	return false;
+}
+
+void SqPlayer::MarkAsBeingKicked()
+{
+	GETPLAYER
+		player->MarkAsBeingKicked();
+}
+
+void SqPlayer::SetLanguageId(unsigned int id)
+{
+	GETPLAYER
+		player->SetLanguageId(id);
+}
+
+bool SqPlayer::IsSourceTV()
+{
+	GETPLAYER
+		return player->IsSourceTV();
+	return false;
+}
+
+bool SqPlayer::IsReplay()
+{
+	GETPLAYER
+		return player->IsReplay();
+	return false;
+}
+
+void SqPlayer::AddDelayedKick(Sqrat::string msg)
+{
+	int userid = -1;
+	GETPLAYER
+		userid = player->GetUserId();
+	else
+		return;
+
+	if(userid)
+		gamehelpers->AddDelayedKick(m_iIndex,userid,msg.data());
+}
+
+bool SqPlayer::HintTextMsg(Sqrat::string msg)
+{
+	return gamehelpers->HintTextMsg(m_iIndex, msg.data());
+}
+
+bool SqPlayer::TextMsg(int dest, Sqrat::string msg)
+{
+	return gamehelpers->TextMsg(m_iIndex, dest, msg.data());
+}
+
+int SqPlayer::GetTeamIndex()
+{
+	GETPLAYER
+	{
+		GETINFO
+			return info->GetTeamIndex();
+	}
+	return -1;
+}
+
+void SqPlayer::ChangeTeam(int TeamNum)
+{
+	GETPLAYER
+	{
+		GETINFO
+			info->ChangeTeam(TeamNum);
+	}
+}
+
+
+
+
+int SqPlayer::GetClientOfUserId(int userid)
+{
+	return playerhelpers->GetClientOfUserId(userid);
+}
+
+int SqPlayer::GetClientFromSerial(unsigned int serial)
+{
+	return playerhelpers->GetClientFromSerial(serial);
+}
+
+int SqPlayer::GetMaxClients()
+{
+	return playerhelpers->GetMaxClients();
+}
+
+int SqPlayer::GetNumPlayers()
+{
+	return playerhelpers->GetNumPlayers();
+}
+
+void SqPlayer::RegisterInVm(Script *vm)
+{
+	DefaultVM::Set(vm->GetVM());
+	RootTable().Bind(_SC("Player"),
+		DerivedClass<SqPlayer,SqEntity,SqEntityAlloc<SqPlayer>>()
+		.Func(_SC("GetName"),&SqPlayer::GetName)
+		.Func(_SC("GetIPAddress"),&SqPlayer::GetIPAddress)
+		.Func(_SC("GetAuthString"),&SqPlayer::GetAuthString)
+		.Func(_SC("IsInGame"),&SqPlayer::IsInGame)
+		.Func(_SC("IsConnected"),&SqPlayer::IsConnected)
+		.Func(_SC("IsFakeClient"),&SqPlayer::IsFakeClient)
+		.Func(_SC("GetAdminId"),&SqPlayer::GetAdminId)
+		.Func(_SC("SetAdminId"),&SqPlayer::SetAdminId)
+		.Func(_SC("GetUserId"),&SqPlayer::GetUserId)
+		.Func(_SC("GetLanguageId"),&SqPlayer::GetLanguageId)
+		.Func(_SC("RunAdminCacheChecks"),&SqPlayer::RunAdminCacheChecks)
+		.Func(_SC("NotifyPostAdminChecks"),&SqPlayer::NotifyPostAdminChecks)
+		.Func(_SC("GetSerial"),&SqPlayer::GetSerial)
+		.Func(_SC("IsAuthorized"),&SqPlayer::IsAuthorized)
+		.Func(_SC("Kick"),&SqPlayer::Kick)
+		.Func(_SC("IsInKickQueue"),&SqPlayer::IsInKickQueue)
+		.Func(_SC("MarkAsBeingKicked"),&SqPlayer::MarkAsBeingKicked)
+		.Func(_SC("SetLanguageId"),&SqPlayer::SetLanguageId)
+		.Func(_SC("IsSourceTV "),&SqPlayer::IsSourceTV)
+		.Func(_SC("IsReplay"),&SqPlayer::IsReplay)
+		.Func(_SC("AddDelayedKick"),&SqPlayer::AddDelayedKick)
+		.Func(_SC("HintTextMsg"),&SqPlayer::HintTextMsg)
+		.Func(_SC("TextMsg"),&SqPlayer::TextMsg)
+		
+		//Static functions
+		.StaticFunc(_SC("IndexOfUserId"),&SqPlayer::GetClientOfUserId)
+		.StaticFunc(_SC("IndexOfSerial"),&SqPlayer::GetClientFromSerial)
+		.StaticFunc(_SC("GetMaxClients"),&SqPlayer::GetMaxClients)
+		.StaticFunc(_SC("GetNumPlayers"),&SqPlayer::GetNumPlayers)
+		);
 }

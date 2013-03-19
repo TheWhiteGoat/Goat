@@ -16,12 +16,6 @@
     <Filter Include="SourceMod SDK">
       <UniqueIdentifier>{756bec42-907f-4d5f-8f6a-d6fbfcce0f1f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\VM">
-      <UniqueIdentifier>{a1866736-6301-47eb-af41-3148c8f1c4d5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\VM">
-      <UniqueIdentifier>{2461aa0e-de6f-43e6-925a-c02d838aaf0c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Managers">
       <UniqueIdentifier>{3ec4d6cb-ec20-4c19-baaf-f4c371557d6c}</UniqueIdentifier>
     </Filter>
@@ -34,6 +28,9 @@
     <Filter Include="Source Files\Natives">
       <UniqueIdentifier>{907286f2-bcda-4102-95dc-9b1f8ba27664}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\sqrat">
+      <UniqueIdentifier>{4bfd7ee9-7bfe-46b8-a736-db4d4dc2672a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="extension.cpp">
@@ -42,46 +39,97 @@
     <ClCompile Include="sdk\smsdk_ext.cpp">
       <Filter>SourceMod SDK</Filter>
     </ClCompile>
+    <ClCompile Include="SqLoader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Managers\EventManager.cpp">
       <Filter>Source Files\Managers</Filter>
     </ClCompile>
-    <ClCompile Include="Natives\SqPlayer.cpp">
+    <ClCompile Include="Managers\ScriptManager.cpp">
+      <Filter>Source Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Natives\SqEntity.cpp">
       <Filter>Source Files\Natives</Filter>
     </ClCompile>
     <ClCompile Include="Natives\SqEvent.cpp">
       <Filter>Source Files\Natives</Filter>
     </ClCompile>
-    <ClCompile Include="Natives\SqEntity.cpp">
+    <ClCompile Include="Natives\SqPlayer.cpp">
       <Filter>Source Files\Natives</Filter>
-    </ClCompile>
-    <ClCompile Include="VM\SqEnvironment.cpp">
-      <Filter>Source Files\VM</Filter>
-    </ClCompile>
-    <ClCompile Include="VM\SqGroups.cpp">
-      <Filter>Source Files\VM</Filter>
-    </ClCompile>
-    <ClCompile Include="VM\SqScript.cpp">
-      <Filter>Source Files\VM</Filter>
-    </ClCompile>
-    <ClCompile Include="SqLoader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Managers\ScriptManager.cpp">
-      <Filter>Source Files\Managers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="extension.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="sdk\smsdk_config.h">
       <Filter>SourceMod SDK</Filter>
     </ClInclude>
     <ClInclude Include="sdk\smsdk_ext.h">
       <Filter>SourceMod SDK</Filter>
     </ClInclude>
+    <ClInclude Include="include\sqrat\sqratAllocator.h">
+      <Filter>Header Files\sqrat</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sqrat\sqratArray.h">
+      <Filter>Header Files\sqrat</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sqrat\sqratClass.h">
+      <Filter>Header Files\sqrat</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sqrat\sqratClassType.h">
+      <Filter>Header Files\sqrat</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sqrat\sqratConst.h">
+      <Filter>Header Files\sqrat</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sqrat\sqratFunction.h">
+      <Filter>Header Files\sqrat</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sqrat\sqratGlobalMethods.h">
+      <Filter>Header Files\sqrat</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sqrat\sqratMemberMethods.h">
+      <Filter>Header Files\sqrat</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sqrat\sqratObject.h">
+      <Filter>Header Files\sqrat</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sqrat\sqratOverloadMethods.h">
+      <Filter>Header Files\sqrat</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sqrat\sqratScript.h">
+      <Filter>Header Files\sqrat</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sqrat\sqratTable.h">
+      <Filter>Header Files\sqrat</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sqrat\sqratTypes.h">
+      <Filter>Header Files\sqrat</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sqrat\sqratUtil.h">
+      <Filter>Header Files\sqrat</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sqrat\sqratVM.h">
+      <Filter>Header Files\sqrat</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sqmodule.h">
+      <Filter>Header Files\sqrat</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sqrat.h">
+      <Filter>Header Files\sqrat</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sqratimport.h">
+      <Filter>Header Files\sqrat</Filter>
+    </ClInclude>
     <ClInclude Include="Managers\EventManager.h">
       <Filter>Header Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Managers\ScriptManager.h">
+      <Filter>Header Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="extension.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SqLoader.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Natives\SqEntity.h">
       <Filter>Header Files\Natives</Filter>
@@ -91,21 +139,6 @@
     </ClInclude>
     <ClInclude Include="Natives\SqPlayer.h">
       <Filter>Header Files\Natives</Filter>
-    </ClInclude>
-    <ClInclude Include="VM\SqEnvironment.h">
-      <Filter>Header Files\VM</Filter>
-    </ClInclude>
-    <ClInclude Include="VM\SqGroups.h">
-      <Filter>Header Files\VM</Filter>
-    </ClInclude>
-    <ClInclude Include="VM\SqScript.h">
-      <Filter>Header Files\VM</Filter>
-    </ClInclude>
-    <ClInclude Include="SqLoader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Managers\ScriptManager.h">
-      <Filter>Header Files\Managers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

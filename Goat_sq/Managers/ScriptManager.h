@@ -1,6 +1,9 @@
-#pragma once
-#include <squirrel.h>
+#ifndef _INCLUDE_SCRIPTMANAGER_H
+#define _INCLUDE_SCRIPTMANAGER_H
+
+#include <sqrat.h>
 #include <sourcehook/sh_list.h>
+
 
 class IScriptListener
 {
@@ -28,3 +31,5 @@ public:
 };
 
 extern ScriptManager g_ScriptManager;
+
+#endif

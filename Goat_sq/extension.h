@@ -38,8 +38,7 @@
  */
 
 #include "smsdk_ext.h"
-#include "SQLoader.h"
-#include <sourcehook/sourcehook.h>
+#include "SqLoader.h"
 /**
  * @brief Sample implementation of the SDK Extension.
  * Note: Uncomment one of the pre-defined virtual functions in order to use it.
@@ -55,7 +54,7 @@ public:
 	 * @param late		Whether or not the module was loaded after map load.
 	 * @return			True to succeed loading, false to fail.
 	 */
-	virtual bool SDK_OnLoad(char *error, size_t maxlength, bool late);
+	//virtual bool SDK_OnLoad(char *error, size_t maxlength, bool late);
 	
 	/**
 	 * @brief This is called right before the extension is unloaded.
@@ -115,5 +114,5 @@ public:
 	//virtual bool SDK_OnMetamodPauseChange(bool paused, char *error, size_t maxlength);
 #endif
 };
-
+extern SQLoader *g_pSqLoader;
 #endif // _INCLUDE_SOURCEMOD_EXTENSION_PROPER_H_

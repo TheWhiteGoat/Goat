@@ -19,12 +19,27 @@
     <ClCompile Include="Natives\SqPlayer.cpp" />
     <ClCompile Include="sdk\smsdk_ext.cpp" />
     <ClCompile Include="SqLoader.cpp" />
-    <ClCompile Include="VM\SqEnvironment.cpp" />
-    <ClCompile Include="VM\SqGroups.cpp" />
-    <ClCompile Include="VM\SqScript.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="extension.h" />
+    <ClInclude Include="include\sqmodule.h" />
+    <ClInclude Include="include\sqrat.h" />
+    <ClInclude Include="include\sqratimport.h" />
+    <ClInclude Include="include\sqrat\sqratAllocator.h" />
+    <ClInclude Include="include\sqrat\sqratArray.h" />
+    <ClInclude Include="include\sqrat\sqratClass.h" />
+    <ClInclude Include="include\sqrat\sqratClassType.h" />
+    <ClInclude Include="include\sqrat\sqratConst.h" />
+    <ClInclude Include="include\sqrat\sqratFunction.h" />
+    <ClInclude Include="include\sqrat\sqratGlobalMethods.h" />
+    <ClInclude Include="include\sqrat\sqratMemberMethods.h" />
+    <ClInclude Include="include\sqrat\sqratObject.h" />
+    <ClInclude Include="include\sqrat\sqratOverloadMethods.h" />
+    <ClInclude Include="include\sqrat\sqratScript.h" />
+    <ClInclude Include="include\sqrat\sqratTable.h" />
+    <ClInclude Include="include\sqrat\sqratTypes.h" />
+    <ClInclude Include="include\sqrat\sqratUtil.h" />
+    <ClInclude Include="include\sqrat\sqratVM.h" />
     <ClInclude Include="Managers\EventManager.h" />
     <ClInclude Include="Managers\ScriptManager.h" />
     <ClInclude Include="Natives\SqEntity.h" />
@@ -33,9 +48,6 @@
     <ClInclude Include="sdk\smsdk_config.h" />
     <ClInclude Include="sdk\smsdk_ext.h" />
     <ClInclude Include="SqLoader.h" />
-    <ClInclude Include="VM\SqEnvironment.h" />
-    <ClInclude Include="VM\SqGroups.h" />
-    <ClInclude Include="VM\SqScript.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{915A34EB-2069-4B44-8507-F5C25D2C700C}</ProjectGuid>
@@ -71,7 +83,10 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LibraryPath>$(HL2SDKCSS)\lib\public;$(LibraryPath)</LibraryPath>
-    <IncludePath>VM;Squirrel;Managers;Natives;sdk;$(SM15)\public\sourcepawn;$(SM15)\public;$(HL2SDKCSS)\public;$(HL2SDKCSS)\public\engine;$(HL2SDKCSS)\public\game\server;$(HL2SDKCSS)\public\tier0;$(HL2SDKCSS)\public\tier1;$(MMSOURCE19)\core;$(MMSOURCE19)\core\sourcehook;$(IncludePath)</IncludePath>
+    <IncludePath>include;VM;Squirrel;Managers;Natives;sdk;$(SM15)\public\sourcepawn;$(SM15)\public;$(HL2SDKCSS)\public;$(HL2SDKCSS)\public\engine;$(HL2SDKCSS)\public\game\server;$(HL2SDKCSS)\public\tier0;$(HL2SDKCSS)\public\tier1;$(MMSOURCE19)\core;$(MMSOURCE19)\core\sourcehook;$(IncludePath)</IncludePath>
+    <OutDir>F:\Games\CSS Dedicated\css\cstrike\addons\sourcemod\extensions\</OutDir>
+    <TargetName>$(ProjectName)</TargetName>
+    <TargetExt>.ext.dll</TargetExt>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -82,8 +97,8 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>tier0.lib;tier1.lib;vstdlib.lib;squirreldb.lib;sqstdlibdb.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>F:\Games\CSS Dedicated\css\cstrike\addons\sourcemod\extensions\goat.ext.dll</OutputFile>
+      <AdditionalDependencies>mathlib.lib;tier0.lib;tier1.lib;vstdlib.lib;squirreldb.lib;sqstdlibdb.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

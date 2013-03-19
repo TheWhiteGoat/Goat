@@ -1,574 +1,273 @@
-/*
-*
-*	This file is licensed under the GNU GPLv3
-*	All the licenses are located at the root folder
-*
-*/
-
 #include "SqEvent.h"
 
-SqEvent * g_event = NULL;
+SqEvent  *g_SqEvent = NULL;
 
-//Instance , String , Closure , String , Closure ...
-//String , Closure
-SQInteger Native_HookEvent(HSQUIRRELVM vm)
-{
-	if(g_event == NULL)
-		g_event = new SqEvent();
-
-	int top = sq_gettop(vm);
-	const SQChar * key = NULL;
-	HSQOBJECT inst;
-	sq_resetobject(&inst);
-	if(top >= 4)
-	{
-		if(sq_gettype(vm,2) == OT_INSTANCE)
-		{
-			sq_getstackobj(vm,2,&inst);
-			sq_addref(vm,&inst);
-			for(int i=2; i<top; i+=2)
-			{
-				if(sq_gettype(vm,-1) == OT_CLOSURE)
-					if(SQ_SUCCEEDED(sq_getstring(vm,-2,&key)))
-					{
-						HSQOBJECT obj;
-						sq_resetobject(&obj);
-						sq_getstackobj(vm,-1,&obj);
-						sq_addref(vm,&obj);
-						g_event->AddToTrie(key,inst,true,obj,vm,true,false);
-					}			
-				sq_pop(vm,2);
-			}
-		}
-	}
-	else if(top == 3)
-	{
-		if(sq_gettype(vm,-2) == OT_STRING && sq_gettype(vm,-1) == OT_CLOSURE)
-		{
-			sq_getstring(vm,-2,&key);
-			HSQOBJECT obj;
-			sq_resetobject(&obj);
-			sq_getstackobj(vm,-1,&obj);
-			sq_addref(vm,&obj);
-			g_event->AddToTrie(key,inst,false,obj,vm,true,false);
-		}
-		sq_pop(vm,2);
-	}
-	sq_settop(vm,1);
-	return 0;
-}
-
-SQInteger Native_HookEventPre(HSQUIRRELVM vm)
-{
-	if(g_event == NULL)
-		g_event = new SqEvent();
-
-	int top = sq_gettop(vm);
-	const SQChar * key = NULL;
-	HSQOBJECT inst;
-	sq_resetobject(&inst);
-	if(top >= 4)
-	{
-		if(sq_gettype(vm,2) == OT_INSTANCE)
-		{
-			sq_getstackobj(vm,2,&inst);
-			sq_addref(vm,&inst);
-			for(int i=2; i<top; i+=2)
-			{
-				if(sq_gettype(vm,-1) == OT_CLOSURE)
-					if(SQ_SUCCEEDED(sq_getstring(vm,-2,&key)))
-					{
-						HSQOBJECT obj;
-						sq_resetobject(&obj);
-						sq_getstackobj(vm,-1,&obj);
-						sq_addref(vm,&obj);
-						g_event->AddToTrie(key,inst,true,obj,vm,false,true);
-					}			
-				sq_pop(vm,2);
-			}
-		}
-	}
-	else if(top == 3)
-	{
-		if(sq_gettype(vm,-2) == OT_STRING && sq_gettype(vm,-1) == OT_CLOSURE)
-		{
-			sq_getstring(vm,-2,&key);
-			HSQOBJECT obj;
-			sq_resetobject(&obj);
-			sq_getstackobj(vm,-1,&obj);
-			sq_addref(vm,&obj);
-			g_event->AddToTrie(key,inst,false,obj,vm,false,true);
-		}
-		sq_pop(vm,2);
-	}
-	sq_settop(vm,1);
-	return 0;
-}
-
-
-//String , Closure
-SQInteger Native_UnHookEvent(HSQUIRRELVM vm)
-{
-	if(g_event == NULL)
-	{
-		sq_settop(vm,1);
-		return 0;
-	}
-	int top = sq_gettop(vm);
-	const SQChar * key = NULL;
-	HSQOBJECT obj;
-	sq_resetobject(&obj);
-	if(SQ_SUCCEEDED(sq_getstring(vm,-2,&key)) && sq_gettype(vm,-1) == OT_CLOSURE)
-	{
-		sq_getstackobj(vm,-1,&obj);
-		g_event->FindAndRemoveClosure(vm,key,obj);
-	}
-	sq_settop(vm,1);
-	return 0;
-}
-
-SQ_CLASS_FUNC_DEF(GameEvent,GetName)
-{
-	IGameEvent *gameevent = sq_getinstance<IGameEvent*>(vm);
-	if(gameevent)
-	{
-		sq_pushstring(vm,gameevent->GetName(),-1);
-		return 1;
-	}
-	return 0;
-}
-
-SQ_CLASS_FUNC_DEF(GameEvent,IsReliable)
-{
-	IGameEvent *gameevent = sq_getinstance<IGameEvent*>(vm);
-	if(gameevent)
-	{
-		sq_pushbool(vm,gameevent->IsReliable());
-		return 1;
-	}
-	return 0;
-}
-
-SQ_CLASS_FUNC_DEF(GameEvent,IsLocal)
-{
-	IGameEvent *gameevent = sq_getinstance<IGameEvent*>(vm);
-	if(gameevent)
-	{
-		sq_pushbool(vm,gameevent->IsLocal());
-		return 1;
-	}
-	return 0;
-}
-
-SQ_CLASS_FUNC_DEF(GameEvent,IsEmpty)
-{
-	IGameEvent *gameevent = sq_getinstance<IGameEvent*>(vm);
-	if(gameevent)
-	{
-		sq_pushbool(vm,gameevent->IsEmpty());
-		return 1;
-	}
-	return 0;
-}
-
-SQ_CLASS_FUNC_DEF(GameEvent,GetBool)
-{
-	IGameEvent *gameevent = sq_getinstance<IGameEvent*>(vm);
-	if(gameevent)
-	{
-		const SQChar * keyname = NULL;
-		SQBool defaultret;
-		if(SQ_SUCCEEDED(sq_getstring(vm,-2,&keyname)))
-		{
-			sq_getbool(vm,-1,&defaultret);
-			sq_pop(vm,2);
-			sq_pushbool(vm,(SQBool)gameevent->GetBool(keyname,defaultret));
-			return 1;
-		}
-	}
-	sq_pop(vm,2);
-	return 0;
-}
-
-SQ_CLASS_FUNC_DEF(GameEvent,GetInt)
-{
-	IGameEvent *gameevent = sq_getinstance<IGameEvent*>(vm);
-	if(gameevent)
-	{
-		const SQChar * keyname = NULL;
-		SQInteger defaultret;
-		if(SQ_SUCCEEDED(sq_getstring(vm,-2,&keyname)))
-		{
-			sq_getinteger(vm,-1,&defaultret);
-			sq_pop(vm,2);
-			sq_pushinteger(vm,gameevent->GetInt(keyname,defaultret));
-			return 1;
-		}
-	}
-	sq_pop(vm,2);
-	return 0;
-}
-
-SQ_CLASS_FUNC_DEF(GameEvent,GetFloat)
-{
-	IGameEvent *gameevent = sq_getinstance<IGameEvent*>(vm);
-	if(gameevent)
-	{
-		const SQChar * keyname = NULL;
-		SQFloat defaultret;
-		if(SQ_SUCCEEDED(sq_getstring(vm,-2,&keyname)))
-		{
-			sq_getfloat(vm,-1,&defaultret);
-			sq_pop(vm,2);
-			sq_pushfloat(vm,gameevent->GetFloat(keyname,defaultret));
-			return 1;
-		}
-	}
-	sq_pop(vm,2);
-	return 0;
-}
-
-SQ_CLASS_FUNC_DEF(GameEvent,GetString)
-{
-	IGameEvent *gameevent = sq_getinstance<IGameEvent*>(vm);
-	if(gameevent)
-	{
-		const SQChar * keyname = NULL;
-		const SQChar * defaultret;
-		if(SQ_SUCCEEDED(sq_getstring(vm,-2,&keyname)))
-		{
-			sq_getstring(vm,-1,&defaultret);
-			sq_pop(vm,2);
-			sq_pushstring(vm,gameevent->GetString(keyname,defaultret),-1);
-			return 1;
-		}
-	}
-	sq_pop(vm,2);
-	return 0;
-}
-
-SQ_CLASS_FUNC_DEF(GameEvent,SetBool)
-{
-	IGameEvent *gameevent = sq_getinstance<IGameEvent*>(vm);
-	if(gameevent)
-	{
-		const SQChar * keyname = NULL;
-		SQBool setval;
-		if(SQ_SUCCEEDED(sq_getstring(vm,-2,&keyname)))
-		{
-			sq_getbool(vm,-1,&setval);
-			gameevent->SetBool(keyname,(bool)setval);
-		}
-	}
-	sq_pop(vm,2);
-	return 0;
-}
-
-SQ_CLASS_FUNC_DEF(GameEvent,SetInt)
-{
-	IGameEvent *gameevent = sq_getinstance<IGameEvent*>(vm);
-	if(gameevent)
-	{
-		const SQChar * keyname = NULL;
-		SQInteger setval;
-		if(SQ_SUCCEEDED(sq_getstring(vm,-2,&keyname)))
-		{
-			sq_getinteger(vm,-1,&setval);
-			gameevent->SetInt(keyname,setval);
-		}
-	}
-	sq_pop(vm,2);
-	return 0;
-}
-
-SQ_CLASS_FUNC_DEF(GameEvent,SetFloat)
-{
-	IGameEvent *gameevent = sq_getinstance<IGameEvent*>(vm);
-	if(gameevent)
-	{
-		const SQChar * keyname = NULL;
-		SQFloat setval;
-		if(SQ_SUCCEEDED(sq_getstring(vm,-2,&keyname)))
-		{
-			sq_getfloat(vm,-1,&setval);
-			gameevent->SetFloat(keyname,setval);
-		}
-	}
-	sq_pop(vm,2);
-	return 0;
-}
-
-SQ_CLASS_FUNC_DEF(GameEvent,SetString)
-{
-	IGameEvent *gameevent = sq_getinstance<IGameEvent*>(vm);
-	if(gameevent)
-	{
-		const SQChar * keyname = NULL;
-		const SQChar * setval;
-		if(SQ_SUCCEEDED(sq_getstring(vm,-2,&keyname)))
-		{
-			sq_getstring(vm,-1,&setval);
-			gameevent->SetString(keyname,setval);
-		}
-	}
-	sq_pop(vm,2);
-	return 0;
-}
-
-SQ_CLASS_BUILD_START(GameEvent)
-//SQ_CLASS_FUNC(GameEvent,constructor,2,".i")
-
-SQ_CLASS_FUNC(GameEvent,GetName,1,".")
-
-SQ_CLASS_FUNC(GameEvent,IsReliable,1,".")
-SQ_CLASS_FUNC(GameEvent,IsLocal,1,".")
-SQ_CLASS_FUNC(GameEvent,IsEmpty,2,".s")
-
-SQ_CLASS_FUNC(GameEvent,GetBool,3,".sb")
-SQ_CLASS_FUNC(GameEvent,GetInt,3,".si")
-SQ_CLASS_FUNC(GameEvent,GetFloat,3,".sf")
-SQ_CLASS_FUNC(GameEvent,GetString,3,".ss")
-
-SQ_CLASS_FUNC(GameEvent,SetBool,3,".sb")
-SQ_CLASS_FUNC(GameEvent,SetInt,3,".si")
-SQ_CLASS_FUNC(GameEvent,SetFloat,3,".sf")
-SQ_CLASS_FUNC(GameEvent,SetString,3,".ss")
-SQ_CLASS_BUILD_END(GameEvent)
-
-bool SqEvent::RegisterNatives(SqGroups * pGroups)
-{
-	pGroups->RegisterFunction("HookEvent",Native_HookEvent,-3,".x|ss|c");
-	pGroups->RegisterFunction("HookEventPre",Native_HookEventPre,-3,".x|ss|c");
-	pGroups->RegisterFunction("UnHookEvent",Native_UnHookEvent,-3,".sc");
-	pGroups->RegisterClass(&SQ_CLASS_GET(GameEvent));
-	return true;
-}
-
-SqEvent::SqEvent()
+SqEvent::SqEvent(void)
 {
 	if(g_EventManager == NULL)
 		g_EventManager = new EventManager();
 
-	if(!g_EventManager->AddEventListener(this))
-		g_pSM->LogError(myself,"Failed adding event listener");
-
-	m_Args.isset = false;
+	m_LastUnhhok.IsSet = false;
+	g_EventManager->AddEventListener(this);
 }
 
-SqEvent::~SqEvent()
+bool SqEvent::OnFireEvent_Internal(IGameEvent *pEvent, bool bDontBroadcast, bool Post)
 {
-	g_EventManager->RemoveEventListener(this);
-}
-
-bool SqEvent::OnScriptUnloaded(HSQUIRRELVM vm,HSQOBJECT thread ,bool IsThread)
-{
-	if(m_RegEvents.size() > 0)
+	bool res = true;
+	ReturnEventHook flags = CONTINUE;
+	if((Post && m_RegistredEventsList.size() > 0) || 
+		(!Post && m_RegistredEventsListPre.size() > 0))
 	{
-		List<RegisteredEvents*>::iterator it;
-		for(it=m_Closures.begin(); it!=m_Closures.end(); it++)
+		RegisteredEventList *list = NULL;
+		if(Post)
+			list = m_RegistredEventsList.retrieve(pEvent->GetName());
+		else
+			list = m_RegistredEventsListPre.retrieve(pEvent->GetName());
+
+		if(!list)
+			return true;
+
+		
+		if(list->size() > 0)
 		{
-			List<Closures*>::iterator itb;
-			List<Closures*> *closures = &(*it)->closures;
-			if(closures->size() > 0)
+			SqGameEvent ge;
+			ge.SetGameEvent(pEvent);
+
+			RegisteredEventList::iterator it;
+			for(it=list->begin(); it!=list->end(); it++)
 			{
-				for(itb=closures->begin(); itb!=closures->end(); itb++)
+				res = (*it)->Evaluate<bool,SqGameEvent*,bool>(&ge, bDontBroadcast);
+				if(!Post && ge.IsDontBroadcastSet())
+					g_EventManager->SetDontBroadcast(ge.GetDontBroadcast());
+
+				if(m_LastUnhhok.IsSet && m_LastUnhhok.eventname == pEvent->GetName())
 				{
-					if((*itb)->vm == vm)
+					if(m_LastUnhhok.IsListRemoved)
+						break;
+					
+					it = m_LastUnhhok.fixedit;
+				}
+				m_LastUnhhok.IsSet = false;
+			}
+		}
+		else
+			m_RegistredEventsList.remove(pEvent->GetName());
+	}
+	return res;
+}
+
+bool SqEvent::OnFireEvent(IGameEvent *pEvent, bool bDontBroadcast)
+{
+	return OnFireEvent_Internal(pEvent,bDontBroadcast,false);
+}
+
+bool SqEvent::OnFireEvent_Post(IGameEvent *pEvent, bool bDontBroadcast)
+{
+	OnFireEvent_Internal(pEvent,bDontBroadcast,true);
+	return true;
+}
+
+void SqEvent::AddToTrie(const char *key, Sqrat::Function *function, bool PostEvent)
+{
+	if(PostEvent)
+	{
+		RegisteredEventList *list = m_RegistredEventsList.retrieve(key);
+		if(list)
+			list->push_back(function);
+		else
+		{
+			RegisteredEventList lst;
+			lst.push_back(function);
+			m_RegistredEventsList.insert(key,lst);
+		}
+	}
+	else
+	{
+		RegisteredEventList *list = m_RegistredEventsListPre.retrieve(key);
+		if(list)
+			list->push_back(function);
+		else
+		{
+			RegisteredEventList lst;
+			lst.push_back(function);
+			m_RegistredEventsListPre.insert(key,lst);
+		}
+	}
+}
+
+void SqEvent::HookEvent(Sqrat::Object instance, Sqrat::string eventname, Sqrat::Function function)
+{
+	if(instance.GetType() == OT_INSTANCE)
+	{
+		g_SqEvent->AddToTrie(eventname.data(), new Function(function.GetVM(),instance,function.GetFunc()),false);
+	}
+}
+
+void SqEvent::HookEventStatic(Sqrat::string eventname, Sqrat::Function function)
+{
+	g_SqEvent->AddToTrie(eventname.data(), new Function(function),false);
+}
+
+void SqEvent::HookEventPost(Sqrat::Object instance, Sqrat::string eventname, Sqrat::Function function)
+{
+	if(instance.GetType() == OT_INSTANCE)
+	{
+		g_SqEvent->AddToTrie(eventname.data(), new Function(function.GetVM(),instance,function.GetFunc()),true);
+	}
+}
+
+void SqEvent::HookEventPostStatic(Sqrat::string eventname, Sqrat::Function function)
+{
+	g_SqEvent->AddToTrie(eventname.data(), new Function(function),true);
+}
+
+void SqEvent::UnHookEvent_internal(Sqrat::string eventname, Sqrat::Function function, bool Post)
+{
+	RegisteredEventKTrie *trie = NULL;
+	if(Post)
+		trie = g_SqEvent->GetRegisteredEventsList();
+	else
+		trie = g_SqEvent->GetRegisteredEventsListPre();
+
+	if(trie)
+	{
+		RegisteredEventList *list = trie->retrieve(eventname.data());
+		RegisteredEventList::iterator it;
+		if(list && list->size() > 0)
+		{
+			for(it=list->begin(); it!=list->end(); it++)
+			{
+				if((*it)->GetFunc()._unVal.pClosure == function.GetFunc()._unVal.pClosure &&
+					function.GetVM() == (*it)->GetVM()) //thats nice...
+				{
+					UnHookSelf *self = g_SqEvent->GetLastUnhhokStrcut();
+					self->eventname = eventname;
+					it = list->erase(it);
+					self->fixedit = it;
+					self->IsSet = true;
+					if(list->size() == 0)
 					{
-						(*it)->closures.remove((*itb));
-						delete (*itb);
+						if(trie->remove(eventname.data()))
+							self->IsListRemoved = true;
+
+						break;
 					}
 				}
 			}
 		}
 	}
-	return true;
 }
 
-bool SqEvent::OnScriptLoaded(HSQUIRRELVM vm,HSQOBJECT thread ,bool IsThread)
+void SqEvent::UnHookEvent(Sqrat::string eventname, Sqrat::Function function)
 {
-	
-	return true;
+	g_SqEvent->UnHookEvent_internal(eventname,function,true);
 }
 
-bool SqEvent::OnFireEvent_Post(IGameEvent *pEvent_wrong, bool bDontBroadcast_wrong)//Since it is a post hook the arguments are wrong
+void SqEvent::UnHookEventPre(Sqrat::string eventname, Sqrat::Function function)
 {
-	if(!m_Args.IsSet())
-		return true;
+	g_SqEvent->UnHookEvent_internal(eventname,function,false);
+}
 
-	IGameEvent *pEvent;
-	bool bDontBroadcast;
-	m_Args.Get(&pEvent,&bDontBroadcast);
-	
-	const RegisteredEvents * eventcloslist = FindFromTrie(pEvent->GetName());
-	if(eventcloslist == NULL)
-		return true;
-	
-	HSQUIRRELVM vm;
-	HSQOBJECT eventinst;
-	sq_resetobject(&eventinst);
-	List<Closures*>::iterator it;
-	int top = 1;
-	
-	if(eventcloslist->closures.size() > 0)
+SqGameEvent *SqEvent::CreateEvent(Sqrat::string eventname,bool bForce)
+{
+	IGameEvent *gevent = gameevents->CreateEvent(eventname.data(),bForce);
+	if(gevent)
 	{
-		for(it=eventcloslist->closures.begin(); it!=eventcloslist->closures.end(); it++)
-		{
-			if(!(*it)->IsPostHook())
-				continue;
-
-			vm = (*it)->vm;
-			sq_pushroottable(vm);
-			sq_pushstring(vm,_SC("GameEvent"),-1);
-			if(SQ_SUCCEEDED(sq_get(vm,-2)))
-			{
-				sq_createinstance(vm,-1);
-				sq_setinstance<IGameEvent *>(vm,pEvent,-1);
-				sq_getstackobj(vm,-1,&eventinst);
-				sq_addref(vm,&eventinst);
-				sq_pop(vm,3);
-				
-				if((*it)->IsMemberClosure())
-				{
-					sq_pushobject(vm,(*it)->closure);
-					sq_pushobject(vm,(*it)->inst);
-					sq_pushobject(vm,eventinst);
-					sq_call(vm,2,SQFalse,SQTrue);
-				}
-				else
-				{
-					sq_pushobject(vm,(*it)->closure);
-					sq_pushobject(vm,eventinst);
-					sq_call(vm,1,SQFalse,SQTrue);
-				}
-				sq_settop(vm,1);
-				sq_release(vm,&eventinst);
-			}
-		}
+		SqGameEvent *sge = new SqGameEvent();
+		sge->SetGameEvent(gevent);
+		return sge;
 	}
-	gameevents->FreeEvent(pEvent);
-	return true;
+	return NULL;
 }
 
-bool SqEvent::OnFireEvent(IGameEvent *pEvent, bool bDontBroadcast)
+bool SqEvent::FireEvent(SqGameEvent *sqevent, bool bDontBroadcast)
 {
-	m_Args.Set(true,gameevents->DuplicateEvent(pEvent),bDontBroadcast);
-
-	const RegisteredEvents * eventcloslist = FindFromTrie(pEvent->GetName());
-	if(eventcloslist == NULL)
-		return true;
-	
-	HSQUIRRELVM vm;
-	HSQOBJECT eventinst;
-	sq_resetobject(&eventinst);
-	List<Closures*>::iterator it;
-	int top = 1;
-	
-	if(eventcloslist->closures.size() > 0)
+	if(sqevent)
 	{
-		for(it=eventcloslist->closures.begin(); it!=eventcloslist->closures.end(); it++)
-		{
-			if(!(*it)->IsPreHook())
-				continue;
-
-			vm = (*it)->vm;
-			sq_pushroottable(vm);
-			sq_pushstring(vm,_SC("GameEvent"),-1);
-			if(SQ_SUCCEEDED(sq_get(vm,-2)))
-			{
-				sq_createinstance(vm,-1);
-				sq_setinstance<IGameEvent *>(vm,pEvent,-1);
-				sq_getstackobj(vm,-1,&eventinst);
-				sq_addref(vm,&eventinst);
-				sq_pop(vm,3);
-				
-				if((*it)->IsMemberClosure())
-				{
-					sq_pushobject(vm,(*it)->closure);
-					sq_pushobject(vm,(*it)->inst);
-					sq_pushobject(vm,eventinst);
-					sq_call(vm,2,SQFalse,SQTrue);
-				}
-				else
-				{
-					sq_pushobject(vm,(*it)->closure);
-					sq_pushobject(vm,eventinst);
-					sq_call(vm,1,SQFalse,SQTrue);
-					
-				}
-				sq_settop(vm,1);
-				sq_release(vm,&eventinst);
-			}
-		}
+		bool res = gameevents->FireEvent(sqevent->GetGameEvent(),bDontBroadcast);
+		delete sqevent;
+		return res;
 	}
-	return true;
+	return false;
 }
 
-
-bool SqEvent::AddToTrie(const char * key, HSQOBJECT inst, bool UseInstance, HSQOBJECT closure, HSQUIRRELVM vm, bool Post, bool Pre)
+void SqEvent::FreeEvent(SqGameEvent *sqevent)
 {
-	Closures * clos = new Closures();
-	clos->Set(Pre,Post,UseInstance,inst,closure,vm);
-
-	RegisteredEvents * events = m_RegEvents.retrieve(key);
-	if(events)
+	if(sqevent)
 	{
-		events->closures.push_back(clos);
-		return true;
+		gameevents->FreeEvent(sqevent->GetGameEvent());
+		delete sqevent;
+	}
+}
+
+SqGameEvent *SqEvent::DuplicateEvent(SqGameEvent *sqevent)
+{
+	SqGameEvent *sge = new SqGameEvent();
+	IGameEvent *gevent = gameevents->DuplicateEvent(sqevent->GetGameEvent());
+	if(gevent == NULL)
+	{
+		delete sge;
+		return NULL;
 	}
 
-	events = new RegisteredEvents();
-	events->closures.push_back(clos);
-	if(!m_RegEvents.insert(key,*events))
-	{
-		delete clos;
-
-		if(events->closures.size() < 2)
-			delete events;
-
-		return false;
-	}
-	else
-		m_Closures.push_back(events);
-	return true;
+	sge->SetGameEvent(gevent);
+	return sge;
 }
 
-const RegisteredEvents * SqEvent::FindFromTrie(const char * key)
+void SqEvent::SetDontBroadcast(SqGameEvent *sqevent, bool bDontBroadcast)
 {
-	return m_RegEvents.retrieve(key);
+	sqevent->SetDontBroadcast(bDontBroadcast);
 }
 
-bool SqEvent::RemoveFromTrie(const char * key)
+void SqEvent::RegisterInVm(Script *vm)
 {
-	return m_RegEvents.remove(key);
+	if(g_SqEvent == NULL)
+		g_SqEvent = new SqEvent();
+
+	DefaultVM().Set(vm->GetVM());
+
+	RootTable()
+		.Overload(_SC("HookEvent"),&SqEvent::HookEventPost)
+		.Overload(_SC("HookEvent"),&SqEvent::HookEventPostStatic)
+
+		.Overload(_SC("HookEventPre"),&SqEvent::HookEvent)
+		.Overload(_SC("HookEventPre"),&SqEvent::HookEventStatic)
+
+		.Func(_SC("UnHookEvent"),&SqEvent::UnHookEvent)
+		.Func(_SC("UnHookEventPre"),&SqEvent::UnHookEventPre)
+
+		.Func(_SC("CreateEvent"),&SqEvent::CreateEvent)
+		.Func(_SC("FireEvent"),&SqEvent::FireEvent)
+		.Func(_SC("FreeEvent"),&SqEvent::FreeEvent)
+		.Func(_SC("DuplicateEvent"),&SqEvent::DuplicateEvent)
+		;
+
+	ConstTable().Enum(_SC("EventHook"),Enumeration()
+		.Const(_SC("Continue"),ReturnEventHook::CONTINUE)
+		.Const(_SC("Stop"),ReturnEventHook::STOP));
+
+	RootTable().Bind(_SC("GameEvent"),
+		Class<SqGameEvent,NoCopy<SqGameEvent>>()
+		.Func(_SC("GetName"),&SqGameEvent::SqGetName)
+
+		.Func(_SC("IsReliable"),&SqGameEvent::SqIsReliable)
+		.Func(_SC("IsLocal"),&SqGameEvent::SqIsLocal)
+		.Func(_SC("IsEmpty"),&SqGameEvent::SqIsEmpty)
+		//Getters
+		.Func(_SC("GetBool"),&SqGameEvent::SqGetBool)
+		.Func(_SC("GetInt"),&SqGameEvent::SqGetInt)
+		.Func(_SC("GetFloat"),&SqGameEvent::SqGetFloat)
+		.Func(_SC("GetString"),&SqGameEvent::SqGetString)
+		//Setters
+		.Func(_SC("SetBool"),&SqGameEvent::SqSetBool)
+		.Func(_SC("SetInt"),&SqGameEvent::SqSetInt)
+		.Func(_SC("SetFloat"),&SqGameEvent::SqSetFloat)
+		.Func(_SC("SetString"),&SqGameEvent::SqSetString)
+		);
 }
 
-bool SqEvent::FindAndRemoveClosure(HSQUIRRELVM vm, const char * key, HSQOBJECT closure)
+SqEvent::~SqEvent(void)
 {
-	RegisteredEvents * events = m_RegEvents.retrieve(key);
-	if(events == NULL)
-		return false;
-
-	List<Closures*>::iterator it;
-	for(it=events->closures.begin(); it!=events->closures.end(); it++)
-	{
-		if((*it)->vm == vm && closure._type == (*it)->closure._type && closure._unVal.pClosure == (*it)->closure._unVal.pClosure)
-		{
-			if((*it)->UseInstance)
-				sq_release(vm,&((*it)->inst));
-
-			sq_release(vm,&((*it)->closure));
-			events->closures.remove((*it));
-			
-			if(events->closures.size() < 1)
-			{
-				m_RegEvents.remove(key);
-				m_Closures.remove(events);
-				return true;
-			}
-			delete (*it);
-		}
-	}
-	return true;
+	if(g_EventManager)
+		g_EventManager->RemoveEventListener(this);
 }
-

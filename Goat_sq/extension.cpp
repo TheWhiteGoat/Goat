@@ -38,15 +38,8 @@
  */
 
 Goat g_Goat;		/**< Global singleton for extension's main interface */
-SQLoader * g_pSqLoader;
+SQLoader *g_pSqLoader;
 SMEXT_LINK(&g_Goat);
-//CON_COMMAND(testt,testtt);
-
-
-bool Goat::SDK_OnLoad(char *error, size_t maxleng, bool late)
-{
-	return true;
-}
 
 bool SDK_OnMetamodLoad(ISmmAPI *ismm, char *error, size_t maxlen, bool late)
 {
@@ -58,8 +51,7 @@ void Goat::SDK_OnAllLoaded()
 	g_pSM->LogMessage(myself,"Goat starts loading plugins");
 	g_pSqLoader = new SQLoader();
 	g_pSqLoader->Init();
-	g_pSqLoader->LoadConsts();
-	g_pSqLoader->LoadNatives();
+	g_pSqLoader->LoadAddons();
 	g_pSqLoader->LoadScripts();
 
 }

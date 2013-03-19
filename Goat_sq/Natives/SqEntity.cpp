@@ -1,78 +1,73 @@
-/*
-*
-*	This file is licensed under the GNU GPLv3
-*	All the licenses are located at the root folder
-*
-*/
-
 #include "SqEntity.h"
 
 
-edict_t * SqEntity::BaseEntityToEdict(CBaseEntity *pEntity)
+SqEntity::SqEntity(int index)
 {
-	IServerUnknown *pUnk = (IServerUnknown *)pEntity;
-	IServerNetworkable *pNet = pUnk->GetNetworkable();
-
-	if (!pNet)
-	{
-		return NULL;
-	}
-	return pNet->GetEdict();
+	m_iIndex = index;
+	m_EntityRef = gamehelpers->IndexToReference(index);
 }
 
-SQ_CLASS_FUNC_DEF(Entity,constructor)
+SqEntity::~SqEntity(void)
 {
-	int index = 0;
-	int ref = 0;
-	bool success = false;
-	if((success = SQ_SUCCEEDED(sq_getinteger(vm,-1,&index))))
-	{
-		ref = gamehelpers->IndexToReference(index);
-		success = SQ_SUCCEEDED(sq_setinstance(vm,ref));
-	}
-	else
-		sq_pop(vm,1);
-
-	sq_pushbool(vm,success);
-	return 1;
 }
 
-SQ_CLASS_FUNC_DEF(Entity,GetSendProp)
+int SqEntity::GetIndex()
 {
-
-	return 0;
+	return m_iIndex;
 }
 
-SQ_CLASS_FUNC_DEF(Entity,SetSendProp)
+int SqEntity::GetValveRef()
 {
-
-	return 0;
+	return m_EntityRef;
 }
 
-SQ_CLASS_FUNC_DEF(Entity,index)
+int SqEntity::ReferenceToIndex(int index)
 {
-	int ref = sq_getinstance<int>(vm);
-	int index = gamehelpers->ReferenceToIndex(ref);
-	sq_pushinteger(vm,index);
-	return 1;
+	return gamehelpers->ReferenceToIndex(index);
 }
 
-SQ_CLASS_FUNC_DEF(Entity,toPlayer)
+void SqEntity::RegisterInVm(Script *vm)
 {
+	DefaultVM::Set(vm->GetVM());
+	RootTable().Bind(_SC("Entity"),
+		Class<SqEntity, SqEntityAlloc<SqEntity>>()
+		.Func(_SC("GetIndex"),&SqEntity::GetIndex)
+		.Func(_SC("GetValveRef"),&SqEntity::GetValveRef)
+		.StaticFunc(_SC("RefToIndex"),&SqEntity::ReferenceToIndex)
+		);
 
-	return 0;
-}
+	RootTable().Bind(_SC("Vector"), //commented functions got a linking problem 
+		Class<Vector>()
+		.Var("x",&Vector::x)
+		.Var("y",&Vector::y)
+		.Var("z",&Vector::z)
+		.Func("Init",&Vector::Init)
+		.Func("IsValid",&Vector::IsValid)
+		.Func("Invalidate",&Vector::Invalidate)
+		.Func("Random",&Vector::Random)
+		.Func("Zero",&Vector::Zero)
+		.Func("Negate",&Vector::Negate)
+		.Func("Length",&Vector::Length)
+		.Func("LengthSqr",&Vector::LengthSqr)
+		.Func("IsZero",&Vector::IsZero)
+		.Func("NormalizeInPlace",&Vector::NormalizeInPlace)
+		.Func("IsLengthGreaterThan",&Vector::IsLengthGreaterThan)
+		.Func("IsLengthLessThan",&Vector::IsLengthLessThan)
+		.Func("WithinAABox",&Vector::WithinAABox)
+		.Func("DistTo",&Vector::DistTo)
+		.Func("DistToSqr",&Vector::DistToSqr)
+		.Func("Dot",&Vector::Dot)
+		.Func("Length2D",&Vector::Length2D)
+		.Func("Length2DSqr",&Vector::Length2DSqr)
+		.Func("Cross",&Vector::Cross)
+		.Func("Min",&Vector::Min)
+		.Func("Max",&Vector::Max)
 
-SQ_CLASS_BUILD_START(Entity)
-SQ_CLASS_FUNC(Entity,constructor,2,".i")
-SQ_CLASS_FUNC(Entity,index,1,".")
-//SQ_CLASS_FUNC(Entity,GetSendProp,-2,".i|si")
-//SQ_CLASS_FUNC(Entity,SetSendProp,-3,".i|sn|s|xi")
-//SQ_CLASS_FUNC(Entity,toPlayer,1,".")
-SQ_CLASS_BUILD_END(Entity)
-
-bool SqEntity::RegisterNatives(SqGroups * pGroups)
-{
-	pGroups->RegisterClass(&SQ_CLASS_GET(Entity));
-	return true;
+		.Func<Vector (Vector::*)(const Vector&) const>("_sub",&Vector::operator-) //ok that was a pain in the ass
+		.Func<Vector (Vector::*)(const Vector&) const>("_add",&Vector::operator+)
+		.Overload<Vector (Vector::*)(const Vector&) const>("_mul",&Vector::operator*)
+		.Overload<Vector (Vector::*)(const float) const>("_mul",&Vector::operator*)
+		.Overload<Vector (Vector::*)(const Vector&) const>("_div",&Vector::operator/)
+		.Overload<Vector (Vector::*)(const float) const>("_div",&Vector::operator/)
+		);
 }

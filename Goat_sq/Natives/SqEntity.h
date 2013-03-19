@@ -1,23 +1,38 @@
-/*
-*
-*	This file is licensed under the GNU GPLv3
-*	All the licenses are located at the root folder
-*
-*/
-
 #pragma once
+#include <sqrat.h>
+#include <smsdk_ext.h>
 
-#include "SqEnvironment.h"
-#include "SqGroups.h"
-#include <iservernetworkable.h>
-#include <IServerUnknown.h>
+using namespace Sqrat;
+
+template<class C>
+class SqEntityAlloc : public NoCopy<C>{
+public:
+    static SQInteger New(HSQUIRRELVM vm) {
+		int index = 0;
+		sq_getinteger(vm,-1,&index);
+		sq_pop(vm,1);
+        C* instance = new C(index);
+        sq_setinstanceup(vm, 1, instance);
+        sq_setreleasehook(vm, 1, &Delete);
+        return 0;
+	}
+};
 
 class SqEntity
 {
+protected:
+	cell_t m_EntityRef;
+	int m_iIndex;
 public:
-	static bool RegisterNatives(SqGroups * pGroups);
-	static edict_t * BaseEntityToEdict(CBaseEntity *pEntity);
-	//SqEntity(void);
-	//~SqEntity(void);
+	SqEntity(void);
+	SqEntity(int index);
+	~SqEntity(void);
+
+	static void RegisterInVm(Script *vm);
+
+	int GetIndex();
+	int GetValveRef();
+
+	static int ReferenceToIndex(int index);
 };
 
