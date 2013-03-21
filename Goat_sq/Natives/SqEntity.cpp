@@ -63,11 +63,14 @@ void SqEntity::RegisterInVm(Script *vm)
 		.Func("Min",&Vector::Min)
 		.Func("Max",&Vector::Max)
 
-		.Func<Vector (Vector::*)(const Vector&) const>("_sub",&Vector::operator-) //ok that was a pain in the ass
+		//.Func<Vector (Vector::*)(const Vector&) const>("_cmp",&Vector::operator==) //needs a wrapper
+#ifndef VECTOR_NO_SLOW_OPERATIONS
+		.Func<Vector (Vector::*)(const Vector&) const>("_sub",&Vector::operator-)
 		.Func<Vector (Vector::*)(const Vector&) const>("_add",&Vector::operator+)
 		.Overload<Vector (Vector::*)(const Vector&) const>("_mul",&Vector::operator*)
 		.Overload<Vector (Vector::*)(const float) const>("_mul",&Vector::operator*)
 		.Overload<Vector (Vector::*)(const Vector&) const>("_div",&Vector::operator/)
 		.Overload<Vector (Vector::*)(const float) const>("_div",&Vector::operator/)
+#endif
 		);
 }

@@ -37,6 +37,7 @@ namespace Sqrat {
 //
 // Squirrel Global Functions
 //
+#define STATICCALLERROR _SC("This function isn't static")
 
 template <class C, class R>
 class SqMember {
@@ -51,10 +52,13 @@ public:
         C* ptr = NULL;
         sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
-        R ret = (ptr->*method)();
-
-        PushVar(vm, ret);
-        return 1;
+		if(ptr != NULL)
+		{
+			R ret = (ptr->*method)();
+			PushVar(vm, ret);
+			return 1;
+		}
+		return sq_throwerror(vm,STATICCALLERROR);
     }
 
     static SQInteger Func0C(HSQUIRRELVM vm) {
@@ -66,10 +70,13 @@ public:
         C* ptr = NULL;
         sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
-        R ret = (ptr->*method)();
-
-        PushVar(vm, ret);
-        return 1;
+		if(ptr != NULL)
+		{
+			R ret = (ptr->*method)();
+			PushVar(vm, ret);
+			return 1;
+		}
+		return sq_throwerror(vm,STATICCALLERROR);
     }
 
     // Arg Count 1
@@ -83,12 +90,16 @@ public:
         C* ptr = NULL;
         sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
-        R ret = (ptr->*method)(
+		if(ptr != NULL)
+		{
+			R ret = (ptr->*method)(
                     Var<A1>(vm, 2).value
                 );
 
-        PushVar(vm, ret);
-        return 1;
+			PushVar(vm, ret);
+			return 1;
+		}
+		return sq_throwerror(vm,STATICCALLERROR);
     }
 
     template <class A1>
@@ -101,12 +112,16 @@ public:
         C* ptr = NULL;
         sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
-        R ret = (ptr->*method)(
-                    Var<A1>(vm, 2).value
-                );
+		if(ptr != NULL)
+		{
+			R ret = (ptr->*method)(
+						Var<A1>(vm, 2).value
+					);
 
-        PushVar(vm, ret);
-        return 1;
+			PushVar(vm, ret);
+			return 1;
+		}
+		return sq_throwerror(vm,STATICCALLERROR);
     }
 
     // Arg Count 2
@@ -120,13 +135,17 @@ public:
         C* ptr = NULL;
         sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
-        R ret = (ptr->*method)(
-                    Var<A1>(vm, 2).value,
-                    Var<A2>(vm, 3).value
-                );
-
-        PushVar(vm, ret);
-        return 1;
+		if(ptr != NULL)
+		{
+			R ret = (ptr->*method)(
+						Var<A1>(vm, 2).value,
+						Var<A2>(vm, 3).value
+					);
+			
+			PushVar(vm, ret);
+			return 1;
+		}
+		return sq_throwerror(vm,STATICCALLERROR);
     }
 
     template <class A1, class A2>
@@ -139,13 +158,17 @@ public:
         C* ptr = NULL;
         sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
-        R ret = (ptr->*method)(
-                    Var<A1>(vm, 2).value,
-                    Var<A2>(vm, 3).value
-                );
+		if(ptr != NULL)
+		{
+			R ret = (ptr->*method)(
+						Var<A1>(vm, 2).value,
+						Var<A2>(vm, 3).value
+					);
 
-        PushVar(vm, ret);
-        return 1;
+				PushVar(vm, ret);
+			return 1;
+		}
+		return sq_throwerror(vm,STATICCALLERROR);
     }
 
     // Arg Count 3
@@ -159,15 +182,19 @@ public:
         C* ptr = NULL;
         sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
-        R ret = (ptr->*method)(
-                    Var<A1>(vm, 2).value,
-                    Var<A2>(vm, 3).value,
-                    Var<A3>(vm, 4).value
-                );
+		if(ptr != NULL)
+		{
+			R ret = (ptr->*method)(
+						Var<A1>(vm, 2).value,
+						Var<A2>(vm, 3).value,
+						Var<A3>(vm, 4).value
+					);
 
-        PushVar(vm, ret);
-        return 1;
-    }
+			PushVar(vm, ret);
+			return 1;
+		}
+		return sq_throwerror(vm,STATICCALLERROR);
+	}
 
     template <class A1, class A2, class A3>
     static SQInteger Func3C(HSQUIRRELVM vm) {
@@ -179,14 +206,18 @@ public:
         C* ptr = NULL;
         sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
-        R ret = (ptr->*method)(
-                    Var<A1>(vm, 2).value,
-                    Var<A2>(vm, 3).value,
-                    Var<A3>(vm, 4).value
-                );
+		if(ptr != NULL)
+		{
+			R ret = (ptr->*method)(
+						Var<A1>(vm, 2).value,
+						Var<A2>(vm, 3).value,
+						Var<A3>(vm, 4).value
+					);
 
-        PushVar(vm, ret);
-        return 1;
+			PushVar(vm, ret);
+			return 1;
+		}
+		return sq_throwerror(vm,STATICCALLERROR);
     }
 
     // Arg Count 4
@@ -200,15 +231,19 @@ public:
         C* ptr = NULL;
         sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
-        R ret = (ptr->*method)(
-                    Var<A1>(vm, 2).value,
-                    Var<A2>(vm, 3).value,
-                    Var<A3>(vm, 4).value,
-                    Var<A4>(vm, 5).value
-                );
+		if(ptr != NULL)
+		{
+			R ret = (ptr->*method)(
+						Var<A1>(vm, 2).value,
+						Var<A2>(vm, 3).value,
+						Var<A3>(vm, 4).value,
+						Var<A4>(vm, 5).value
+					);
 
-        PushVar(vm, ret);
-        return 1;
+			PushVar(vm, ret);
+			return 1;
+		}
+		return sq_throwerror(vm,STATICCALLERROR);
     }
 
     template <class A1, class A2, class A3, class A4>
@@ -221,15 +256,19 @@ public:
         C* ptr = NULL;
         sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
-        R ret = (ptr->*method)(
-                    Var<A1>(vm, 2).value,
-                    Var<A2>(vm, 3).value,
-                    Var<A3>(vm, 4).value,
-                    Var<A4>(vm, 5).value
-                );
+		if(ptr != NULL)
+		{
+			R ret = (ptr->*method)(
+						Var<A1>(vm, 2).value,
+						Var<A2>(vm, 3).value,
+						Var<A3>(vm, 4).value,
+						Var<A4>(vm, 5).value
+					);
 
-        PushVar(vm, ret);
-        return 1;
+			PushVar(vm, ret);
+			return 1;
+		}
+		return sq_throwerror(vm,STATICCALLERROR);
     }
 
     // Arg Count 5
@@ -243,16 +282,20 @@ public:
         C* ptr = NULL;
         sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
-        R ret = (ptr->*method)(
-                    Var<A1>(vm, 2).value,
-                    Var<A2>(vm, 3).value,
-                    Var<A3>(vm, 4).value,
-                    Var<A4>(vm, 5).value,
-                    Var<A5>(vm, 6).value
-                );
+		if(ptr != NULL)
+		{
+			R ret = (ptr->*method)(
+						Var<A1>(vm, 2).value,
+						Var<A2>(vm, 3).value,
+						Var<A3>(vm, 4).value,
+						Var<A4>(vm, 5).value,
+						Var<A5>(vm, 6).value
+					);
 
-        PushVar(vm, ret);
-        return 1;
+			PushVar(vm, ret);
+			return 1;
+		}
+		return sq_throwerror(vm,STATICCALLERROR);
     }
 
     template <class A1, class A2, class A3, class A4, class A5>
@@ -265,16 +308,20 @@ public:
         C* ptr = NULL;
         sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
-        R ret = (ptr->*method)(
-                    Var<A1>(vm, 2).value,
-                    Var<A2>(vm, 3).value,
-                    Var<A3>(vm, 4).value,
-                    Var<A4>(vm, 5).value,
-                    Var<A5>(vm, 6).value
-                );
+		if(ptr != NULL)
+		{
+			R ret = (ptr->*method)(
+						Var<A1>(vm, 2).value,
+						Var<A2>(vm, 3).value,
+						Var<A3>(vm, 4).value,
+						Var<A4>(vm, 5).value,
+						Var<A5>(vm, 6).value
+					);
 
-        PushVar(vm, ret);
-        return 1;
+			PushVar(vm, ret);
+			return 1;
+		}
+		return sq_throwerror(vm,STATICCALLERROR);
     }
 
     // Arg Count 6
@@ -288,17 +335,21 @@ public:
         C* ptr = NULL;
         sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
-        R ret = (ptr->*method)(
-                    Var<A1>(vm, 2).value,
-                    Var<A2>(vm, 3).value,
-                    Var<A3>(vm, 4).value,
-                    Var<A4>(vm, 5).value,
-                    Var<A5>(vm, 6).value,
-                    Var<A6>(vm, 7).value
-                );
+		if(ptr != NULL)
+		{
+			R ret = (ptr->*method)(
+						Var<A1>(vm, 2).value,
+						Var<A2>(vm, 3).value,
+						Var<A3>(vm, 4).value,
+						Var<A4>(vm, 5).value,
+						Var<A5>(vm, 6).value,
+						Var<A6>(vm, 7).value
+					);
 
-        PushVar(vm, ret);
-        return 1;
+			PushVar(vm, ret);
+			return 1;
+		}
+		return sq_throwerror(vm,STATICCALLERROR);
     }
 
     template <class A1, class A2, class A3, class A4, class A5, class A6>
@@ -311,17 +362,21 @@ public:
         C* ptr = NULL;
         sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
-        R ret = (ptr->*method)(
-                    Var<A1>(vm, 2).value,
-                    Var<A2>(vm, 3).value,
-                    Var<A3>(vm, 4).value,
-                    Var<A4>(vm, 5).value,
-                    Var<A5>(vm, 6).value,
-                    Var<A6>(vm, 7).value
-                );
+		if(ptr != NULL)
+		{
+			R ret = (ptr->*method)(
+						Var<A1>(vm, 2).value,
+						Var<A2>(vm, 3).value,
+						Var<A3>(vm, 4).value,
+						Var<A4>(vm, 5).value,
+						Var<A5>(vm, 6).value,
+						Var<A6>(vm, 7).value
+					);
 
-        PushVar(vm, ret);
-        return 1;
+			PushVar(vm, ret);
+			return 1;
+		}
+		return sq_throwerror(vm,STATICCALLERROR);
     }
 
     // Arg Count 7
@@ -335,18 +390,22 @@ public:
         C* ptr = NULL;
         sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
-        R ret = (ptr->*method)(
-                    Var<A1>(vm, 2).value,
-                    Var<A2>(vm, 3).value,
-                    Var<A3>(vm, 4).value,
-                    Var<A4>(vm, 5).value,
-                    Var<A5>(vm, 6).value,
-                    Var<A6>(vm, 7).value,
-                    Var<A7>(vm, 8).value
-                );
+		if(ptr != NULL)
+		{
+			R ret = (ptr->*method)(
+						Var<A1>(vm, 2).value,
+						Var<A2>(vm, 3).value,
+						Var<A3>(vm, 4).value,
+						Var<A4>(vm, 5).value,
+						Var<A5>(vm, 6).value,
+						Var<A6>(vm, 7).value,
+						Var<A7>(vm, 8).value
+					);
 
-        PushVar(vm, ret);
-        return 1;
+			PushVar(vm, ret);
+			return 1;
+		}
+		return sq_throwerror(vm,STATICCALLERROR);
     }
 
     template <class A1, class A2, class A3, class A4, class A5, class A6, class A7>
@@ -359,18 +418,22 @@ public:
         C* ptr = NULL;
         sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
-        R ret = (ptr->*method)(
-                    Var<A1>(vm, 2).value,
-                    Var<A2>(vm, 3).value,
-                    Var<A3>(vm, 4).value,
-                    Var<A4>(vm, 5).value,
-                    Var<A5>(vm, 6).value,
-                    Var<A6>(vm, 7).value,
-                    Var<A7>(vm, 8).value
-                );
+		if(ptr != NULL)
+		{
+			R ret = (ptr->*method)(
+						Var<A1>(vm, 2).value,
+						Var<A2>(vm, 3).value,
+						Var<A3>(vm, 4).value,
+						Var<A4>(vm, 5).value,
+						Var<A5>(vm, 6).value,
+						Var<A6>(vm, 7).value,
+						Var<A7>(vm, 8).value
+					);
 
-        PushVar(vm, ret);
-        return 1;
+			PushVar(vm, ret);
+			return 1;
+		}
+		return sq_throwerror(vm,STATICCALLERROR);
     }
 
     // Arg Count 8
@@ -384,19 +447,23 @@ public:
         C* ptr = NULL;
         sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
-        R ret = (ptr->*method)(
-                    Var<A1>(vm, 2).value,
-                    Var<A2>(vm, 3).value,
-                    Var<A3>(vm, 4).value,
-                    Var<A4>(vm, 5).value,
-                    Var<A5>(vm, 6).value,
-                    Var<A6>(vm, 7).value,
-                    Var<A7>(vm, 8).value,
-                    Var<A8>(vm, 9).value
-                );
+		if(ptr != NULL)
+		{
+			R ret = (ptr->*method)(
+						Var<A1>(vm, 2).value,
+						Var<A2>(vm, 3).value,
+						Var<A3>(vm, 4).value,
+						Var<A4>(vm, 5).value,
+						Var<A5>(vm, 6).value,
+						Var<A6>(vm, 7).value,
+						Var<A7>(vm, 8).value,
+						Var<A8>(vm, 9).value
+					);
 
-        PushVar(vm, ret);
-        return 1;
+			PushVar(vm, ret);
+			return 1;
+		}
+		return sq_throwerror(vm,STATICCALLERROR);
     }
 
     template <class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8>
@@ -409,19 +476,23 @@ public:
         C* ptr = NULL;
         sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
-        R ret = (ptr->*method)(
-                    Var<A1>(vm, 2).value,
-                    Var<A2>(vm, 3).value,
-                    Var<A3>(vm, 4).value,
-                    Var<A4>(vm, 5).value,
-                    Var<A5>(vm, 6).value,
-                    Var<A6>(vm, 7).value,
-                    Var<A7>(vm, 8).value,
-                    Var<A8>(vm, 9).value
-                );
+		if(ptr != NULL)
+		{
+			R ret = (ptr->*method)(
+						Var<A1>(vm, 2).value,
+						Var<A2>(vm, 3).value,
+						Var<A3>(vm, 4).value,
+						Var<A4>(vm, 5).value,
+						Var<A5>(vm, 6).value,
+						Var<A6>(vm, 7).value,
+						Var<A7>(vm, 8).value,
+						Var<A8>(vm, 9).value
+					);
 
-        PushVar(vm, ret);
-        return 1;
+			PushVar(vm, ret);
+			return 1;
+		}
+		return sq_throwerror(vm,STATICCALLERROR);
     }
 
     // Arg Count 9
@@ -435,20 +506,24 @@ public:
         C* ptr = NULL;
         sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
-        R ret = (ptr->*method)(
-                    Var<A1>(vm, 2).value,
-                    Var<A2>(vm, 3).value,
-                    Var<A3>(vm, 4).value,
-                    Var<A4>(vm, 5).value,
-                    Var<A5>(vm, 6).value,
-                    Var<A6>(vm, 7).value,
-                    Var<A7>(vm, 8).value,
-                    Var<A8>(vm, 9).value,
-                    Var<A9>(vm, 10).value
-                );
+		if(ptr != NULL)
+		{
+			R ret = (ptr->*method)(
+						Var<A1>(vm, 2).value,
+						Var<A2>(vm, 3).value,
+						Var<A3>(vm, 4).value,
+						Var<A4>(vm, 5).value,
+						Var<A5>(vm, 6).value,
+						Var<A6>(vm, 7).value,
+						Var<A7>(vm, 8).value,
+						Var<A8>(vm, 9).value,
+						Var<A9>(vm, 10).value
+					);
 
-        PushVar(vm, ret);
-        return 1;
+			PushVar(vm, ret);
+			return 1;
+		}
+		return sq_throwerror(vm,STATICCALLERROR);
     }
 
     template <class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9>
@@ -461,20 +536,24 @@ public:
         C* ptr = NULL;
         sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
-        R ret = (ptr->*method)(
-                    Var<A1>(vm, 2).value,
-                    Var<A2>(vm, 3).value,
-                    Var<A3>(vm, 4).value,
-                    Var<A4>(vm, 5).value,
-                    Var<A5>(vm, 6).value,
-                    Var<A6>(vm, 7).value,
-                    Var<A7>(vm, 8).value,
-                    Var<A8>(vm, 9).value,
-                    Var<A9>(vm, 10).value
-                );
+		if(ptr != NULL)
+		{
+			R ret = (ptr->*method)(
+						Var<A1>(vm, 2).value,
+						Var<A2>(vm, 3).value,
+						Var<A3>(vm, 4).value,
+						Var<A4>(vm, 5).value,
+						Var<A5>(vm, 6).value,
+						Var<A6>(vm, 7).value,
+						Var<A7>(vm, 8).value,
+						Var<A8>(vm, 9).value,
+						Var<A9>(vm, 10).value
+					);
 
-        PushVar(vm, ret);
-        return 1;
+			PushVar(vm, ret);
+			return 1;
+		}
+		return sq_throwerror(vm,STATICCALLERROR);
     }
 
 
@@ -489,21 +568,25 @@ public:
         C* ptr = NULL;
         sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
-        R ret = (ptr->*method)(
-                    Var<A1>(vm, 2).value,
-                    Var<A2>(vm, 3).value,
-                    Var<A3>(vm, 4).value,
-                    Var<A4>(vm, 5).value,
-                    Var<A5>(vm, 6).value,
-                    Var<A6>(vm, 7).value,
-                    Var<A7>(vm, 8).value,
-                    Var<A8>(vm, 9).value,
-                    Var<A9>(vm, 10).value,
-                    Var<A10>(vm, 11).value
-                );
+		if(ptr != NULL)
+		{
+			R ret = (ptr->*method)(
+						Var<A1>(vm, 2).value,
+						Var<A2>(vm, 3).value,
+						Var<A3>(vm, 4).value,
+						Var<A4>(vm, 5).value,
+						Var<A5>(vm, 6).value,
+						Var<A6>(vm, 7).value,
+						Var<A7>(vm, 8).value,
+						Var<A8>(vm, 9).value,
+						Var<A9>(vm, 10).value,
+						Var<A10>(vm, 11).value
+					);
 
-        PushVar(vm, ret);
-        return 1;
+			PushVar(vm, ret);
+			return 1;
+		}
+		return sq_throwerror(vm,STATICCALLERROR);
     }
 
     template <class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10>
@@ -516,21 +599,25 @@ public:
         C* ptr = NULL;
         sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
-        R ret = (ptr->*method)(
-                    Var<A1>(vm, 2).value,
-                    Var<A2>(vm, 3).value,
-                    Var<A3>(vm, 4).value,
-                    Var<A4>(vm, 5).value,
-                    Var<A5>(vm, 6).value,
-                    Var<A6>(vm, 7).value,
-                    Var<A7>(vm, 8).value,
-                    Var<A8>(vm, 9).value,
-                    Var<A9>(vm, 10).value,
-                    Var<A10>(vm, 11).value
-                );
+		if(ptr != NULL)
+		{
+			R ret = (ptr->*method)(
+						Var<A1>(vm, 2).value,
+						Var<A2>(vm, 3).value,
+						Var<A3>(vm, 4).value,
+						Var<A4>(vm, 5).value,
+						Var<A5>(vm, 6).value,
+						Var<A6>(vm, 7).value,
+						Var<A7>(vm, 8).value,
+						Var<A8>(vm, 9).value,
+						Var<A9>(vm, 10).value,
+						Var<A10>(vm, 11).value
+					);
 
-        PushVar(vm, ret);
-        return 1;
+			PushVar(vm, ret);
+			return 1;
+		}
+		return sq_throwerror(vm,STATICCALLERROR);
     }
 
 
@@ -545,22 +632,26 @@ public:
         C* ptr = NULL;
         sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
-        R ret = (ptr->*method)(
-                    Var<A1>(vm, 2).value,
-                    Var<A2>(vm, 3).value,
-                    Var<A3>(vm, 4).value,
-                    Var<A4>(vm, 5).value,
-                    Var<A5>(vm, 6).value,
-                    Var<A6>(vm, 7).value,
-                    Var<A7>(vm, 8).value,
-                    Var<A8>(vm, 9).value,
-                    Var<A9>(vm, 10).value,
-                    Var<A10>(vm, 11).value,
-                    Var<A11>(vm, 12).value
-                );
+		if(ptr != NULL)
+		{
+			R ret = (ptr->*method)(
+						Var<A1>(vm, 2).value,
+						Var<A2>(vm, 3).value,
+						Var<A3>(vm, 4).value,
+						Var<A4>(vm, 5).value,
+						Var<A5>(vm, 6).value,
+						Var<A6>(vm, 7).value,
+						Var<A7>(vm, 8).value,
+						Var<A8>(vm, 9).value,
+						Var<A9>(vm, 10).value,
+						Var<A10>(vm, 11).value,
+						Var<A11>(vm, 12).value
+					);
 
-        PushVar(vm, ret);
-        return 1;
+			PushVar(vm, ret);
+			return 1;
+		}
+		return sq_throwerror(vm,STATICCALLERROR);
     }
 
     template <class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10, class A11>
@@ -573,22 +664,26 @@ public:
         C* ptr = NULL;
         sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
-        R ret = (ptr->*method)(
-                    Var<A1>(vm, 2).value,
-                    Var<A2>(vm, 3).value,
-                    Var<A3>(vm, 4).value,
-                    Var<A4>(vm, 5).value,
-                    Var<A5>(vm, 6).value,
-                    Var<A6>(vm, 7).value,
-                    Var<A7>(vm, 8).value,
-                    Var<A8>(vm, 9).value,
-                    Var<A9>(vm, 10).value,
-                    Var<A10>(vm, 11).value,
-                    Var<A11>(vm, 12).value
-                );
+		if(ptr != NULL)
+		{
+			R ret = (ptr->*method)(
+						Var<A1>(vm, 2).value,
+						Var<A2>(vm, 3).value,
+						Var<A3>(vm, 4).value,
+						Var<A4>(vm, 5).value,
+						Var<A5>(vm, 6).value,
+						Var<A6>(vm, 7).value,
+						Var<A7>(vm, 8).value,
+						Var<A8>(vm, 9).value,
+						Var<A9>(vm, 10).value,
+						Var<A10>(vm, 11).value,
+						Var<A11>(vm, 12).value
+					);
 
-        PushVar(vm, ret);
-        return 1;
+				PushVar(vm, ret);
+				return 1;
+		}
+		return sq_throwerror(vm,STATICCALLERROR);
     }
 
 
@@ -603,23 +698,27 @@ public:
         C* ptr = NULL;
         sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
-        R ret = (ptr->*method)(
-                    Var<A1>(vm, 2).value,
-                    Var<A2>(vm, 3).value,
-                    Var<A3>(vm, 4).value,
-                    Var<A4>(vm, 5).value,
-                    Var<A5>(vm, 6).value,
-                    Var<A6>(vm, 7).value,
-                    Var<A7>(vm, 8).value,
-                    Var<A8>(vm, 9).value,
-                    Var<A9>(vm, 10).value,
-                    Var<A10>(vm, 11).value,
-                    Var<A11>(vm, 12).value,
-                    Var<A12>(vm, 13).value
-                );
+		if(ptr != NULL)
+		{
+			R ret = (ptr->*method)(
+						Var<A1>(vm, 2).value,
+						Var<A2>(vm, 3).value,
+						Var<A3>(vm, 4).value,
+						Var<A4>(vm, 5).value,
+						Var<A5>(vm, 6).value,
+						Var<A6>(vm, 7).value,
+						Var<A7>(vm, 8).value,
+						Var<A8>(vm, 9).value,
+						Var<A9>(vm, 10).value,
+						Var<A10>(vm, 11).value,
+						Var<A11>(vm, 12).value,
+						Var<A12>(vm, 13).value
+					);
 
-        PushVar(vm, ret);
-        return 1;
+			PushVar(vm, ret);
+			return 1;
+		}
+		return sq_throwerror(vm,STATICCALLERROR);
     }
 
     template <class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10, class A11, class A12>
@@ -632,23 +731,27 @@ public:
         C* ptr = NULL;
         sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
-        R ret = (ptr->*method)(
-                    Var<A1>(vm, 2).value,
-                    Var<A2>(vm, 3).value,
-                    Var<A3>(vm, 4).value,
-                    Var<A4>(vm, 5).value,
-                    Var<A5>(vm, 6).value,
-                    Var<A6>(vm, 7).value,
-                    Var<A7>(vm, 8).value,
-                    Var<A8>(vm, 9).value,
-                    Var<A9>(vm, 10).value,
-                    Var<A10>(vm, 11).value,
-                    Var<A11>(vm, 12).value,
-                    Var<A12>(vm, 13).value
-                );
+		if(ptr != NULL)
+		{
+			R ret = (ptr->*method)(
+						Var<A1>(vm, 2).value,
+						Var<A2>(vm, 3).value,
+						Var<A3>(vm, 4).value,
+						Var<A4>(vm, 5).value,
+						Var<A5>(vm, 6).value,
+						Var<A6>(vm, 7).value,
+						Var<A7>(vm, 8).value,
+						Var<A8>(vm, 9).value,
+						Var<A9>(vm, 10).value,
+						Var<A10>(vm, 11).value,
+						Var<A11>(vm, 12).value,
+						Var<A12>(vm, 13).value
+					);
 
-        PushVar(vm, ret);
-        return 1;
+			PushVar(vm, ret);
+			return 1;
+		}
+		return sq_throwerror(vm,STATICCALLERROR);
     }
 
     // Arg Count 13
@@ -662,24 +765,28 @@ public:
         C* ptr = NULL;
         sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
-        R ret = (ptr->*method)(
-                    Var<A1>(vm, 2).value,
-                    Var<A2>(vm, 3).value,
-                    Var<A3>(vm, 4).value,
-                    Var<A4>(vm, 5).value,
-                    Var<A5>(vm, 6).value,
-                    Var<A6>(vm, 7).value,
-                    Var<A7>(vm, 8).value,
-                    Var<A8>(vm, 9).value,
-                    Var<A9>(vm, 10).value,
-                    Var<A10>(vm, 11).value,
-                    Var<A11>(vm, 12).value,
-                    Var<A12>(vm, 13).value,
-                    Var<A13>(vm, 14).value
-                );
+		if(ptr != NULL)
+		{
+			R ret = (ptr->*method)(
+						Var<A1>(vm, 2).value,
+						Var<A2>(vm, 3).value,
+						Var<A3>(vm, 4).value,
+						Var<A4>(vm, 5).value,
+						Var<A5>(vm, 6).value,
+						Var<A6>(vm, 7).value,
+						Var<A7>(vm, 8).value,
+						Var<A8>(vm, 9).value,
+						Var<A9>(vm, 10).value,
+						Var<A10>(vm, 11).value,
+						Var<A11>(vm, 12).value,
+						Var<A12>(vm, 13).value,
+						Var<A13>(vm, 14).value
+					);
 
-        PushVar(vm, ret);
-        return 1;
+			PushVar(vm, ret);
+			return 1;
+		}
+		return sq_throwerror(vm,STATICCALLERROR);
     }
 
     template <class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10, class A11, class A12, class A13>
@@ -692,24 +799,28 @@ public:
         C* ptr = NULL;
         sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
-        R ret = (ptr->*method)(
-                    Var<A1>(vm, 2).value,
-                    Var<A2>(vm, 3).value,
-                    Var<A3>(vm, 4).value,
-                    Var<A4>(vm, 5).value,
-                    Var<A5>(vm, 6).value,
-                    Var<A6>(vm, 7).value,
-                    Var<A7>(vm, 8).value,
-                    Var<A8>(vm, 9).value,
-                    Var<A9>(vm, 10).value,
-                    Var<A10>(vm, 11).value,
-                    Var<A11>(vm, 12).value,
-                    Var<A12>(vm, 13).value,
-                    Var<A13>(vm, 14).value
-                );
+		if(ptr != NULL)
+		{
+			R ret = (ptr->*method)(
+						Var<A1>(vm, 2).value,
+						Var<A2>(vm, 3).value,
+						Var<A3>(vm, 4).value,
+						Var<A4>(vm, 5).value,
+						Var<A5>(vm, 6).value,
+						Var<A6>(vm, 7).value,
+						Var<A7>(vm, 8).value,
+						Var<A8>(vm, 9).value,
+						Var<A9>(vm, 10).value,
+						Var<A10>(vm, 11).value,
+						Var<A11>(vm, 12).value,
+						Var<A12>(vm, 13).value,
+						Var<A13>(vm, 14).value
+					);
 
-        PushVar(vm, ret);
-        return 1;
+			PushVar(vm, ret);
+			return 1;
+		}
+		return sq_throwerror(vm,STATICCALLERROR);
     }
 
     // Arg Count 14
@@ -723,25 +834,29 @@ public:
         C* ptr = NULL;
         sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
-        R ret = (ptr->*method)(
-                    Var<A1>(vm, 2).value,
-                    Var<A2>(vm, 3).value,
-                    Var<A3>(vm, 4).value,
-                    Var<A4>(vm, 5).value,
-                    Var<A5>(vm, 6).value,
-                    Var<A6>(vm, 7).value,
-                    Var<A7>(vm, 8).value,
-                    Var<A8>(vm, 9).value,
-                    Var<A9>(vm, 10).value,
-                    Var<A10>(vm, 11).value,
-                    Var<A11>(vm, 12).value,
-                    Var<A12>(vm, 13).value,
-                    Var<A13>(vm, 14).value,
-                    Var<A14>(vm, 15).value
-                );
+		if(ptr != NULL)
+		{
+			R ret = (ptr->*method)(
+						Var<A1>(vm, 2).value,
+						Var<A2>(vm, 3).value,
+						Var<A3>(vm, 4).value,
+						Var<A4>(vm, 5).value,
+						Var<A5>(vm, 6).value,
+						Var<A6>(vm, 7).value,
+						Var<A7>(vm, 8).value,
+						Var<A8>(vm, 9).value,
+						Var<A9>(vm, 10).value,
+						Var<A10>(vm, 11).value,
+						Var<A11>(vm, 12).value,
+						Var<A12>(vm, 13).value,
+						Var<A13>(vm, 14).value,
+						Var<A14>(vm, 15).value
+					);
 
-        PushVar(vm, ret);
-        return 1;
+			PushVar(vm, ret);
+			return 1;
+		}
+		return sq_throwerror(vm,STATICCALLERROR);
     }
 
     template <class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10, class A11, class A12, class A13, class A14>
@@ -754,25 +869,29 @@ public:
         C* ptr = NULL;
         sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
-        R ret = (ptr->*method)(
-                    Var<A1>(vm, 2).value,
-                    Var<A2>(vm, 3).value,
-                    Var<A3>(vm, 4).value,
-                    Var<A4>(vm, 5).value,
-                    Var<A5>(vm, 6).value,
-                    Var<A6>(vm, 7).value,
-                    Var<A7>(vm, 8).value,
-                    Var<A8>(vm, 9).value,
-                    Var<A9>(vm, 10).value,
-                    Var<A10>(vm, 11).value,
-                    Var<A11>(vm, 12).value,
-                    Var<A12>(vm, 13).value,
-                    Var<A13>(vm, 14).value,
-                    Var<A14>(vm, 15).value
-                );
+		if(ptr != NULL)
+		{
+			R ret = (ptr->*method)(
+						Var<A1>(vm, 2).value,
+						Var<A2>(vm, 3).value,
+						Var<A3>(vm, 4).value,
+						Var<A4>(vm, 5).value,
+						Var<A5>(vm, 6).value,
+						Var<A6>(vm, 7).value,
+						Var<A7>(vm, 8).value,
+						Var<A8>(vm, 9).value,
+						Var<A9>(vm, 10).value,
+						Var<A10>(vm, 11).value,
+						Var<A11>(vm, 12).value,
+						Var<A12>(vm, 13).value,
+						Var<A13>(vm, 14).value,
+						Var<A14>(vm, 15).value
+					);
 
-        PushVar(vm, ret);
-        return 1;
+			PushVar(vm, ret);
+			return 1;
+		}
+		return sq_throwerror(vm,STATICCALLERROR);
     }
 };
 
@@ -793,8 +912,12 @@ public:
         C* ptr = NULL;
         sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
-        (ptr->*method)();
-        return 0;
+		if(ptr != NULL)
+		{
+			(ptr->*method)();
+			return 0;
+		}
+        return sq_throwerror(vm,STATICCALLERROR);
     }
 
     static SQInteger Func0C(HSQUIRRELVM vm) {
@@ -806,8 +929,12 @@ public:
         C* ptr = NULL;
         sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
-        (ptr->*method)();
-        return 0;
+		if(ptr != NULL)
+		{
+			(ptr->*method)();
+			return 0;
+		}
+        return sq_throwerror(vm,STATICCALLERROR);
     }
 
     // Arg Count 1
@@ -821,10 +948,14 @@ public:
         C* ptr = NULL;
         sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
-        (ptr->*method)(
-            Var<A1>(vm, 2).value
-        );
-        return 0;
+		if(ptr != NULL)
+		{
+			(ptr->*method)(
+				Var<A1>(vm, 2).value
+			);
+			return 0;
+		}
+        return sq_throwerror(vm,STATICCALLERROR);
     }
 
     template <class A1>
@@ -837,10 +968,14 @@ public:
         C* ptr = NULL;
         sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
-        (ptr->*method)(
-            Var<A1>(vm, 2).value
-        );
-        return 0;
+		if(ptr != NULL)
+		{
+			(ptr->*method)(
+				Var<A1>(vm, 2).value
+			);
+			return 0;
+		}
+        return sq_throwerror(vm,STATICCALLERROR);
     }
 
     // Arg Count 2
@@ -854,11 +989,15 @@ public:
         C* ptr = NULL;
         sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
-        (ptr->*method)(
-            Var<A1>(vm, 2).value,
-            Var<A2>(vm, 3).value
-        );
-        return 0;
+		if(ptr != NULL)
+		{
+			(ptr->*method)(
+				Var<A1>(vm, 2).value,
+				Var<A2>(vm, 3).value
+			);
+			return 0;
+		}
+        return sq_throwerror(vm,STATICCALLERROR);
     }
 
     template <class A1, class A2>
@@ -871,11 +1010,15 @@ public:
         C* ptr = NULL;
         sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
-        (ptr->*method)(
-            Var<A1>(vm, 2).value,
-            Var<A2>(vm, 3).value
-        );
-        return 0;
+		if(ptr != NULL)
+		{
+			(ptr->*method)(
+				Var<A1>(vm, 2).value,
+				Var<A2>(vm, 3).value
+			);
+			return 0;
+		}
+        return sq_throwerror(vm,STATICCALLERROR);
     }
 
     // Arg Count 3
@@ -889,12 +1032,16 @@ public:
         C* ptr = NULL;
         sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
-        (ptr->*method)(
-            Var<A1>(vm, 2).value,
-            Var<A2>(vm, 3).value,
-            Var<A3>(vm, 4).value
-        );
-        return 0;
+		if(ptr != NULL)
+		{
+			(ptr->*method)(
+				Var<A1>(vm, 2).value,
+				Var<A2>(vm, 3).value,
+				Var<A3>(vm, 4).value
+			);
+			return 0;
+		}
+        return sq_throwerror(vm,STATICCALLERROR);
     }
 
     template <class A1, class A2, class A3>
@@ -907,12 +1054,16 @@ public:
         C* ptr = NULL;
         sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
-        (ptr->*method)(
-            Var<A1>(vm, 2).value,
-            Var<A2>(vm, 3).value,
-            Var<A3>(vm, 4).value
-        );
-        return 0;
+		if(ptr != NULL)
+		{
+			(ptr->*method)(
+				Var<A1>(vm, 2).value,
+				Var<A2>(vm, 3).value,
+				Var<A3>(vm, 4).value
+			);
+			return 0;
+		}
+        return sq_throwerror(vm,STATICCALLERROR);
     }
 
     // Arg Count 4
@@ -926,13 +1077,17 @@ public:
         C* ptr = NULL;
         sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
-        (ptr->*method)(
-            Var<A1>(vm, 2).value,
-            Var<A2>(vm, 3).value,
-            Var<A3>(vm, 4).value,
-            Var<A4>(vm, 5).value
-        );
-        return 0;
+		if(ptr != NULL)
+		{
+			(ptr->*method)(
+				Var<A1>(vm, 2).value,
+				Var<A2>(vm, 3).value,
+				Var<A3>(vm, 4).value,
+				Var<A4>(vm, 5).value
+			);
+			return 0;
+		}
+        return sq_throwerror(vm,STATICCALLERROR);
     }
 
     template <class A1, class A2, class A3, class A4>
@@ -945,13 +1100,17 @@ public:
         C* ptr = NULL;
         sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
-        (ptr->*method)(
-            Var<A1>(vm, 2).value,
-            Var<A2>(vm, 3).value,
-            Var<A3>(vm, 4).value,
-            Var<A4>(vm, 5).value
-        );
-        return 0;
+		if(ptr != NULL)
+		{
+			(ptr->*method)(
+				Var<A1>(vm, 2).value,
+				Var<A2>(vm, 3).value,
+				Var<A3>(vm, 4).value,
+				Var<A4>(vm, 5).value
+			);
+			return 0;
+		}
+        return sq_throwerror(vm,STATICCALLERROR);
     }
 
     // Arg Count 5
@@ -965,14 +1124,18 @@ public:
         C* ptr = NULL;
         sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
-        (ptr->*method)(
-            Var<A1>(vm, 2).value,
-            Var<A2>(vm, 3).value,
-            Var<A3>(vm, 4).value,
-            Var<A4>(vm, 5).value,
-            Var<A5>(vm, 6).value
-        );
-        return 0;
+		if(ptr != NULL)
+		{
+			(ptr->*method)(
+				Var<A1>(vm, 2).value,
+				Var<A2>(vm, 3).value,
+				Var<A3>(vm, 4).value,
+				Var<A4>(vm, 5).value,
+				Var<A5>(vm, 6).value
+			);
+			return 0;
+		}
+        return sq_throwerror(vm,STATICCALLERROR);
     }
 
     template <class A1, class A2, class A3, class A4, class A5>
@@ -985,14 +1148,18 @@ public:
         C* ptr = NULL;
         sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
-        (ptr->*method)(
-            Var<A1>(vm, 2).value,
-            Var<A2>(vm, 3).value,
-            Var<A3>(vm, 4).value,
-            Var<A4>(vm, 5).value,
-            Var<A5>(vm, 6).value
-        );
-        return 0;
+		if(ptr != NULL)
+		{
+			(ptr->*method)(
+				Var<A1>(vm, 2).value,
+				Var<A2>(vm, 3).value,
+				Var<A3>(vm, 4).value,
+				Var<A4>(vm, 5).value,
+				Var<A5>(vm, 6).value
+			);
+			return 0;
+		}
+        return sq_throwerror(vm,STATICCALLERROR);
     }
 
     // Arg Count 6
@@ -1006,15 +1173,19 @@ public:
         C* ptr = NULL;
         sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
-        (ptr->*method)(
-            Var<A1>(vm, 2).value,
-            Var<A2>(vm, 3).value,
-            Var<A3>(vm, 4).value,
-            Var<A4>(vm, 5).value,
-            Var<A5>(vm, 6).value,
-            Var<A6>(vm, 7).value
-        );
-        return 0;
+		if(ptr != NULL)
+		{
+			(ptr->*method)(
+				Var<A1>(vm, 2).value,
+				Var<A2>(vm, 3).value,
+				Var<A3>(vm, 4).value,
+				Var<A4>(vm, 5).value,
+				Var<A5>(vm, 6).value,
+				Var<A6>(vm, 7).value
+			);
+			return 0;
+		}
+        return sq_throwerror(vm,STATICCALLERROR);
     }
 
     template <class A1, class A2, class A3, class A4, class A5, class A6>
@@ -1027,15 +1198,19 @@ public:
         C* ptr = NULL;
         sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
-        (ptr->*method)(
-            Var<A1>(vm, 2).value,
-            Var<A2>(vm, 3).value,
-            Var<A3>(vm, 4).value,
-            Var<A4>(vm, 5).value,
-            Var<A5>(vm, 6).value,
-            Var<A6>(vm, 7).value
-        );
-        return 0;
+		if(ptr != NULL)
+		{
+			(ptr->*method)(
+				Var<A1>(vm, 2).value,
+				Var<A2>(vm, 3).value,
+				Var<A3>(vm, 4).value,
+				Var<A4>(vm, 5).value,
+				Var<A5>(vm, 6).value,
+				Var<A6>(vm, 7).value
+			);
+			return 0;
+		}
+        return sq_throwerror(vm,STATICCALLERROR);
     }
 
     // Arg Count 7
@@ -1049,16 +1224,20 @@ public:
         C* ptr = NULL;
         sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
-        (ptr->*method)(
-            Var<A1>(vm, 2).value,
-            Var<A2>(vm, 3).value,
-            Var<A3>(vm, 4).value,
-            Var<A4>(vm, 5).value,
-            Var<A5>(vm, 6).value,
-            Var<A6>(vm, 7).value,
-            Var<A7>(vm, 8).value
-        );
-        return 0;
+		if(ptr != NULL)
+		{
+			(ptr->*method)(
+				Var<A1>(vm, 2).value,
+				Var<A2>(vm, 3).value,
+				Var<A3>(vm, 4).value,
+				Var<A4>(vm, 5).value,
+				Var<A5>(vm, 6).value,
+				Var<A6>(vm, 7).value,
+				Var<A7>(vm, 8).value
+			);
+			return 0;
+		}
+        return sq_throwerror(vm,STATICCALLERROR);
     }
 
     template <class A1, class A2, class A3, class A4, class A5, class A6, class A7>
@@ -1071,16 +1250,20 @@ public:
         C* ptr = NULL;
         sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
-        (ptr->*method)(
-            Var<A1>(vm, 2).value,
-            Var<A2>(vm, 3).value,
-            Var<A3>(vm, 4).value,
-            Var<A4>(vm, 5).value,
-            Var<A5>(vm, 6).value,
-            Var<A6>(vm, 7).value,
-            Var<A7>(vm, 8).value
-        );
-        return 0;
+		if(ptr != NULL)
+		{
+			(ptr->*method)(
+				Var<A1>(vm, 2).value,
+				Var<A2>(vm, 3).value,
+				Var<A3>(vm, 4).value,
+				Var<A4>(vm, 5).value,
+				Var<A5>(vm, 6).value,
+				Var<A6>(vm, 7).value,
+				Var<A7>(vm, 8).value
+			);
+			return 0;
+		}
+        return sq_throwerror(vm,STATICCALLERROR);
     }
 
     // Arg Count 8
@@ -1094,17 +1277,21 @@ public:
         C* ptr = NULL;
         sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
-        (ptr->*method)(
-            Var<A1>(vm, 2).value,
-            Var<A2>(vm, 3).value,
-            Var<A3>(vm, 4).value,
-            Var<A4>(vm, 5).value,
-            Var<A5>(vm, 6).value,
-            Var<A6>(vm, 7).value,
-            Var<A7>(vm, 8).value,
-            Var<A8>(vm, 9).value
-        );
-        return 0;
+		if(ptr != NULL)
+		{
+			(ptr->*method)(
+				Var<A1>(vm, 2).value,
+				Var<A2>(vm, 3).value,
+				Var<A3>(vm, 4).value,
+				Var<A4>(vm, 5).value,
+				Var<A5>(vm, 6).value,
+				Var<A6>(vm, 7).value,
+				Var<A7>(vm, 8).value,
+				Var<A8>(vm, 9).value
+			);
+			return 0;
+		}
+        return sq_throwerror(vm,STATICCALLERROR);
     }
 
     template <class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8>
@@ -1117,17 +1304,21 @@ public:
         C* ptr = NULL;
         sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
-        (ptr->*method)(
-            Var<A1>(vm, 2).value,
-            Var<A2>(vm, 3).value,
-            Var<A3>(vm, 4).value,
-            Var<A4>(vm, 5).value,
-            Var<A5>(vm, 6).value,
-            Var<A6>(vm, 7).value,
-            Var<A7>(vm, 8).value,
-            Var<A8>(vm, 9).value
-        );
-        return 0;
+		if(ptr != NULL)
+		{
+			(ptr->*method)(
+				Var<A1>(vm, 2).value,
+				Var<A2>(vm, 3).value,
+				Var<A3>(vm, 4).value,
+				Var<A4>(vm, 5).value,
+				Var<A5>(vm, 6).value,
+				Var<A6>(vm, 7).value,
+				Var<A7>(vm, 8).value,
+				Var<A8>(vm, 9).value
+			);
+			return 0;
+		}
+        return sq_throwerror(vm,STATICCALLERROR);
     }
 
     // Arg Count 9
@@ -1141,18 +1332,22 @@ public:
         C* ptr = NULL;
         sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
-        (ptr->*method)(
-            Var<A1>(vm, 2).value,
-            Var<A2>(vm, 3).value,
-            Var<A3>(vm, 4).value,
-            Var<A4>(vm, 5).value,
-            Var<A5>(vm, 6).value,
-            Var<A6>(vm, 7).value,
-            Var<A7>(vm, 8).value,
-            Var<A8>(vm, 9).value,
-            Var<A9>(vm, 10).value
-        );
+		if(ptr != NULL)
+		{
+			(ptr->*method)(
+				Var<A1>(vm, 2).value,
+				Var<A2>(vm, 3).value,
+				Var<A3>(vm, 4).value,
+				Var<A4>(vm, 5).value,
+				Var<A5>(vm, 6).value,
+				Var<A6>(vm, 7).value,
+				Var<A7>(vm, 8).value,
+				Var<A8>(vm, 9).value,
+				Var<A9>(vm, 10).value
+			);
         return 0;
+		}
+        return sq_throwerror(vm,STATICCALLERROR);
     }
 
     template <class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9>
@@ -1165,18 +1360,22 @@ public:
         C* ptr = NULL;
         sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
-        (ptr->*method)(
-            Var<A1>(vm, 2).value,
-            Var<A2>(vm, 3).value,
-            Var<A3>(vm, 4).value,
-            Var<A4>(vm, 5).value,
-            Var<A5>(vm, 6).value,
-            Var<A6>(vm, 7).value,
-            Var<A7>(vm, 8).value,
-            Var<A8>(vm, 9).value,
-            Var<A9>(vm, 10).value
-        );
-        return 0;
+		if(ptr != NULL)
+		{
+			(ptr->*method)(
+				Var<A1>(vm, 2).value,
+				Var<A2>(vm, 3).value,
+				Var<A3>(vm, 4).value,
+				Var<A4>(vm, 5).value,
+				Var<A5>(vm, 6).value,
+				Var<A6>(vm, 7).value,
+				Var<A7>(vm, 8).value,
+				Var<A8>(vm, 9).value,
+				Var<A9>(vm, 10).value
+			);
+			return 0;
+		}
+        return sq_throwerror(vm,STATICCALLERROR);
     }
 
     // Arg Count 10
@@ -1190,19 +1389,23 @@ public:
         C* ptr = NULL;
         sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
-        (ptr->*method)(
-            Var<A1>(vm, 2).value,
-            Var<A2>(vm, 3).value,
-            Var<A3>(vm, 4).value,
-            Var<A4>(vm, 5).value,
-            Var<A5>(vm, 6).value,
-            Var<A6>(vm, 7).value,
-            Var<A7>(vm, 8).value,
-            Var<A8>(vm, 9).value,
-            Var<A9>(vm, 10).value,
-            Var<A10>(vm, 11).value
-        );
-        return 0;
+		if(ptr != NULL)
+		{
+			(ptr->*method)(
+				Var<A1>(vm, 2).value,
+				Var<A2>(vm, 3).value,
+				Var<A3>(vm, 4).value,
+				Var<A4>(vm, 5).value,
+				Var<A5>(vm, 6).value,
+				Var<A6>(vm, 7).value,
+				Var<A7>(vm, 8).value,
+				Var<A8>(vm, 9).value,
+				Var<A9>(vm, 10).value,
+				Var<A10>(vm, 11).value
+			);
+			return 0;
+		}
+        return sq_throwerror(vm,STATICCALLERROR);
     }
 
     template <class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10>
@@ -1215,19 +1418,23 @@ public:
         C* ptr = NULL;
         sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
-        (ptr->*method)(
-            Var<A1>(vm, 2).value,
-            Var<A2>(vm, 3).value,
-            Var<A3>(vm, 4).value,
-            Var<A4>(vm, 5).value,
-            Var<A5>(vm, 6).value,
-            Var<A6>(vm, 7).value,
-            Var<A7>(vm, 8).value,
-            Var<A8>(vm, 9).value,
-            Var<A9>(vm, 10).value,
-            Var<A10>(vm, 11).value
-        );
-        return 0;
+		if(ptr != NULL)
+		{
+			(ptr->*method)(
+				Var<A1>(vm, 2).value,
+				Var<A2>(vm, 3).value,
+				Var<A3>(vm, 4).value,
+				Var<A4>(vm, 5).value,
+				Var<A5>(vm, 6).value,
+				Var<A6>(vm, 7).value,
+				Var<A7>(vm, 8).value,
+				Var<A8>(vm, 9).value,
+				Var<A9>(vm, 10).value,
+				Var<A10>(vm, 11).value
+			);
+			return 0;
+		}
+        return sq_throwerror(vm,STATICCALLERROR);
     }
 
     // Arg Count 11
@@ -1241,20 +1448,24 @@ public:
         C* ptr = NULL;
         sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
-        (ptr->*method)(
-            Var<A1>(vm, 2).value,
-            Var<A2>(vm, 3).value,
-            Var<A3>(vm, 4).value,
-            Var<A4>(vm, 5).value,
-            Var<A5>(vm, 6).value,
-            Var<A6>(vm, 7).value,
-            Var<A7>(vm, 8).value,
-            Var<A8>(vm, 9).value,
-            Var<A9>(vm, 10).value,
-            Var<A10>(vm, 11).value,
-            Var<A11>(vm, 12).value
-        );
-        return 0;
+		if(ptr != NULL)
+		{
+			(ptr->*method)(
+				Var<A1>(vm, 2).value,
+				Var<A2>(vm, 3).value,
+				Var<A3>(vm, 4).value,
+				Var<A4>(vm, 5).value,
+				Var<A5>(vm, 6).value,
+				Var<A6>(vm, 7).value,
+				Var<A7>(vm, 8).value,
+				Var<A8>(vm, 9).value,
+				Var<A9>(vm, 10).value,
+				Var<A10>(vm, 11).value,
+				Var<A11>(vm, 12).value
+			);
+			return 0;
+		}
+        return sq_throwerror(vm,STATICCALLERROR);
     }
 
     template <class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10, class A11>
@@ -1267,20 +1478,24 @@ public:
         C* ptr = NULL;
         sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
-        (ptr->*method)(
-            Var<A1>(vm, 2).value,
-            Var<A2>(vm, 3).value,
-            Var<A3>(vm, 4).value,
-            Var<A4>(vm, 5).value,
-            Var<A5>(vm, 6).value,
-            Var<A6>(vm, 7).value,
-            Var<A7>(vm, 8).value,
-            Var<A8>(vm, 9).value,
-            Var<A9>(vm, 10).value,
-            Var<A10>(vm, 11).value,
-            Var<A10>(vm, 12).value
-        );
-        return 0;
+		if(ptr != NULL)
+		{
+			(ptr->*method)(
+				Var<A1>(vm, 2).value,
+				Var<A2>(vm, 3).value,
+				Var<A3>(vm, 4).value,
+				Var<A4>(vm, 5).value,
+				Var<A5>(vm, 6).value,
+				Var<A6>(vm, 7).value,
+				Var<A7>(vm, 8).value,
+				Var<A8>(vm, 9).value,
+				Var<A9>(vm, 10).value,
+				Var<A10>(vm, 11).value,
+				Var<A10>(vm, 12).value
+			);
+			return 0;
+		}
+        return sq_throwerror(vm,STATICCALLERROR);
     }
 
     // Arg Count 12
@@ -1294,21 +1509,25 @@ public:
         C* ptr = NULL;
         sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
-        (ptr->*method)(
-            Var<A1>(vm, 2).value,
-            Var<A2>(vm, 3).value,
-            Var<A3>(vm, 4).value,
-            Var<A4>(vm, 5).value,
-            Var<A5>(vm, 6).value,
-            Var<A6>(vm, 7).value,
-            Var<A7>(vm, 8).value,
-            Var<A8>(vm, 9).value,
-            Var<A9>(vm, 10).value,
-            Var<A10>(vm, 11).value,
-            Var<A11>(vm, 12).value,
-            Var<A12>(vm, 13).value
-        );
-        return 0;
+		if(ptr != NULL)
+		{
+			(ptr->*method)(
+				Var<A1>(vm, 2).value,
+				Var<A2>(vm, 3).value,
+				Var<A3>(vm, 4).value,
+				Var<A4>(vm, 5).value,
+				Var<A5>(vm, 6).value,
+				Var<A6>(vm, 7).value,
+				Var<A7>(vm, 8).value,
+				Var<A8>(vm, 9).value,
+				Var<A9>(vm, 10).value,
+				Var<A10>(vm, 11).value,
+				Var<A11>(vm, 12).value,
+				Var<A12>(vm, 13).value
+			);
+			return 0;
+		}
+        return sq_throwerror(vm,STATICCALLERROR);
     }
 
     template <class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10, class A11, class A12>
@@ -1321,21 +1540,25 @@ public:
         C* ptr = NULL;
         sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
-        (ptr->*method)(
-            Var<A1>(vm, 2).value,
-            Var<A2>(vm, 3).value,
-            Var<A3>(vm, 4).value,
-            Var<A4>(vm, 5).value,
-            Var<A5>(vm, 6).value,
-            Var<A6>(vm, 7).value,
-            Var<A7>(vm, 8).value,
-            Var<A8>(vm, 9).value,
-            Var<A9>(vm, 10).value,
-            Var<A10>(vm, 11).value,
-            Var<A11>(vm, 12).value,
-            Var<A12>(vm, 13).value
-        );
-        return 0;
+		if(ptr != NULL)
+		{
+			(ptr->*method)(
+				Var<A1>(vm, 2).value,
+				Var<A2>(vm, 3).value,
+				Var<A3>(vm, 4).value,
+				Var<A4>(vm, 5).value,
+				Var<A5>(vm, 6).value,
+				Var<A6>(vm, 7).value,
+				Var<A7>(vm, 8).value,
+				Var<A8>(vm, 9).value,
+				Var<A9>(vm, 10).value,
+				Var<A10>(vm, 11).value,
+				Var<A11>(vm, 12).value,
+				Var<A12>(vm, 13).value
+			);
+			return 0;
+		}
+        return sq_throwerror(vm,STATICCALLERROR);
     }
 
     // Arg Count 13
@@ -1349,22 +1572,26 @@ public:
         C* ptr = NULL;
         sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
-        (ptr->*method)(
-            Var<A1>(vm, 2).value,
-            Var<A2>(vm, 3).value,
-            Var<A3>(vm, 4).value,
-            Var<A4>(vm, 5).value,
-            Var<A5>(vm, 6).value,
-            Var<A6>(vm, 7).value,
-            Var<A7>(vm, 8).value,
-            Var<A8>(vm, 9).value,
-            Var<A9>(vm, 10).value,
-            Var<A10>(vm, 11).value,
-            Var<A11>(vm, 12).value,
-            Var<A12>(vm, 13).value,
-            Var<A13>(vm, 14).value
-        );
-        return 0;
+		if(ptr != NULL)
+		{
+			(ptr->*method)(
+				Var<A1>(vm, 2).value,
+				Var<A2>(vm, 3).value,
+				Var<A3>(vm, 4).value,
+				Var<A4>(vm, 5).value,
+				Var<A5>(vm, 6).value,
+				Var<A6>(vm, 7).value,
+				Var<A7>(vm, 8).value,
+				Var<A8>(vm, 9).value,
+				Var<A9>(vm, 10).value,
+				Var<A10>(vm, 11).value,
+				Var<A11>(vm, 12).value,
+				Var<A12>(vm, 13).value,
+				Var<A13>(vm, 14).value
+			);
+			return 0;
+		}
+        return sq_throwerror(vm,STATICCALLERROR);
     }
 
     template <class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10, class A11, class A12, class A13>
@@ -1377,22 +1604,26 @@ public:
         C* ptr = NULL;
         sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
-        (ptr->*method)(
-            Var<A1>(vm, 2).value,
-            Var<A2>(vm, 3).value,
-            Var<A3>(vm, 4).value,
-            Var<A4>(vm, 5).value,
-            Var<A5>(vm, 6).value,
-            Var<A6>(vm, 7).value,
-            Var<A7>(vm, 8).value,
-            Var<A8>(vm, 9).value,
-            Var<A9>(vm, 10).value,
-            Var<A10>(vm, 11).value,
-            Var<A11>(vm, 12).value,
-            Var<A12>(vm, 13).value,
-            Var<A13>(vm, 14).value
-        );
-        return 0;
+		if(ptr != NULL)
+		{
+			(ptr->*method)(
+				Var<A1>(vm, 2).value,
+				Var<A2>(vm, 3).value,
+				Var<A3>(vm, 4).value,
+				Var<A4>(vm, 5).value,
+				Var<A5>(vm, 6).value,
+				Var<A6>(vm, 7).value,
+				Var<A7>(vm, 8).value,
+				Var<A8>(vm, 9).value,
+				Var<A9>(vm, 10).value,
+				Var<A10>(vm, 11).value,
+				Var<A11>(vm, 12).value,
+				Var<A12>(vm, 13).value,
+				Var<A13>(vm, 14).value
+			);
+			return 0;
+		}
+        return sq_throwerror(vm,STATICCALLERROR);
     }
 
     // Arg Count 14
@@ -1406,23 +1637,27 @@ public:
         C* ptr = NULL;
         sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
-        (ptr->*method)(
-            Var<A1>(vm, 2).value,
-            Var<A2>(vm, 3).value,
-            Var<A3>(vm, 4).value,
-            Var<A4>(vm, 5).value,
-            Var<A5>(vm, 6).value,
-            Var<A6>(vm, 7).value,
-            Var<A7>(vm, 8).value,
-            Var<A8>(vm, 9).value,
-            Var<A9>(vm, 10).value,
-            Var<A10>(vm, 11).value,
-            Var<A11>(vm, 12).value,
-            Var<A12>(vm, 13).value,
-            Var<A13>(vm, 14).value,
-            Var<A14>(vm, 15).value
-        );
-        return 0;
+		if(ptr != NULL)
+		{
+			(ptr->*method)(
+				Var<A1>(vm, 2).value,
+				Var<A2>(vm, 3).value,
+				Var<A3>(vm, 4).value,
+				Var<A4>(vm, 5).value,
+				Var<A5>(vm, 6).value,
+				Var<A6>(vm, 7).value,
+				Var<A7>(vm, 8).value,
+				Var<A8>(vm, 9).value,
+				Var<A9>(vm, 10).value,
+				Var<A10>(vm, 11).value,
+				Var<A11>(vm, 12).value,
+				Var<A12>(vm, 13).value,
+				Var<A13>(vm, 14).value,
+				Var<A14>(vm, 15).value
+			);
+			return 0;
+		}
+        return sq_throwerror(vm,STATICCALLERROR);
     }
 
     template <class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10, class A11, class A12, class A13, class A14>
@@ -1435,23 +1670,27 @@ public:
         C* ptr = NULL;
         sq_getinstanceup(vm, 1, (SQUserPointer*)&ptr, NULL);
 
-        (ptr->*method)(
-            Var<A1>(vm, 2).value,
-            Var<A2>(vm, 3).value,
-            Var<A3>(vm, 4).value,
-            Var<A4>(vm, 5).value,
-            Var<A5>(vm, 6).value,
-            Var<A6>(vm, 7).value,
-            Var<A7>(vm, 8).value,
-            Var<A8>(vm, 9).value,
-            Var<A9>(vm, 10).value,
-            Var<A10>(vm, 11).value,
-            Var<A11>(vm, 12).value,
-            Var<A12>(vm, 13).value,
-            Var<A13>(vm, 14).value,
-            Var<A14>(vm, 15).value
-        );
-        return 0;
+		if(ptr != NULL)
+		{
+			(ptr->*method)(
+				Var<A1>(vm, 2).value,
+				Var<A2>(vm, 3).value,
+				Var<A3>(vm, 4).value,
+				Var<A4>(vm, 5).value,
+				Var<A5>(vm, 6).value,
+				Var<A6>(vm, 7).value,
+				Var<A7>(vm, 8).value,
+				Var<A8>(vm, 9).value,
+				Var<A9>(vm, 10).value,
+				Var<A10>(vm, 11).value,
+				Var<A11>(vm, 12).value,
+				Var<A12>(vm, 13).value,
+				Var<A13>(vm, 14).value,
+				Var<A14>(vm, 15).value
+			);
+			return 0;
+		}
+        return sq_throwerror(vm,STATICCALLERROR);
     }
 
 };

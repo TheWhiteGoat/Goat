@@ -146,6 +146,14 @@ public:
         return ret;
     }
 
+	template <class C>
+    Object& SetReleaseHook(){
+		sq_pushobject(vm, GetObject());
+		sq_setreleasehook(vm, -1, &DefaultAllocator<C>::Delete);
+        sq_pop(vm, 1);
+        return *this;
+    }
+
     Object GetSlot(SQInteger index) const {
         HSQOBJECT slotObj;
         sq_pushobject(vm, GetObject());
@@ -261,6 +269,15 @@ protected:
     }
 };
 
+
+template<>
+inline void Object::BindValue<int>(const SQChar* name, const int & val, bool staticVar /* = false */) {
+    sq_pushobject(vm, GetObject());
+    sq_pushstring(vm, name, -1);
+    PushVar<int>(vm, val);
+    sq_newslot(vm, -3, staticVar);
+    sq_pop(vm,1); // pop table
+}
 
 //
 // Overridden Getter/Setter

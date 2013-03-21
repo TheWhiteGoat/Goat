@@ -132,9 +132,7 @@ private:
 public:
     enum ERROR_STATE
     {
-#ifdef NO_ERROR
-#undef NO_ERROR //already defined in winver.h
-#endif
+#undef NO_ERROR //winver.h got it 
         NO_ERROR, COMPILE_ERROR, RUNTIME_ERROR
     };
 

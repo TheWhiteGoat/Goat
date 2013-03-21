@@ -42,6 +42,7 @@ public:
 
 	int GetTeamIndex();
 	void ChangeTeam(int TeamNum);
+	Array GetAbsAngles();
 
 	static int GetClientOfUserId(int userid);
 	static int GetClientFromSerial(unsigned int serial);

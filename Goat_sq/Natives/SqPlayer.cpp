@@ -9,10 +9,16 @@ IGamePlayer *player = playerhelpers->GetGamePlayer(m_iIndex);\
 	IPlayerInfo *info = player->GetPlayerInfo();\
 	if(info)\
 
+#define TOVECTOR(angle) new Vector(angle.x,angle.y,angle.z)
+
+#define TOARRAY(arr,vecang)\
+	arr.Append(vecang.x);\
+	arr.Append(vecang.y);\
+	arr.Append(vecang.z);\
+
 SqPlayer::SqPlayer(int index) : SqEntity(index)
 {
 }
-
 
 SqPlayer::~SqPlayer(void)
 {
@@ -194,8 +200,20 @@ void SqPlayer::ChangeTeam(int TeamNum)
 	}
 }
 
-
-
+Array SqPlayer::GetAbsAngles()
+{
+	GETPLAYER
+	{
+		GETINFO
+		{
+			QAngle ang = info->GetAbsAngles();
+			Array arr;
+			TOARRAY(arr,ang)
+			return arr;
+		}
+	}
+	return NULL;
+}
 
 int SqPlayer::GetClientOfUserId(int userid)
 {
@@ -215,6 +233,34 @@ int SqPlayer::GetMaxClients()
 int SqPlayer::GetNumPlayers()
 {
 	return playerhelpers->GetNumPlayers();
+}
+
+class TestClass
+{
+public:
+    std::string tst;
+    TestClass()
+    {
+        tst = "This is a test string";
+        rootconsole->ConsolePrint("ALLOCATOR %X", this);
+    }
+    void Print()
+    {
+        rootconsole->ConsolePrint("PRINTING %s %X",tst.data(), this);
+    }
+    ~TestClass()
+    {
+        rootconsole->ConsolePrint("UNLOADING TESTCLASS %X", this);
+    }
+};
+
+Sqrat::Array TestUnload()
+{
+#undef GetObject
+	Object obj(new TestClass());
+	HSQOBJECT rawobj = obj.GetObject();
+	int refs = sq_getrefcount(obj.GetVM(),&rawobj);
+	return obj.SetReleaseHook<TestClass>();
 }
 
 void SqPlayer::RegisterInVm(Script *vm)
@@ -245,11 +291,15 @@ void SqPlayer::RegisterInVm(Script *vm)
 		.Func(_SC("AddDelayedKick"),&SqPlayer::AddDelayedKick)
 		.Func(_SC("HintTextMsg"),&SqPlayer::HintTextMsg)
 		.Func(_SC("TextMsg"),&SqPlayer::TextMsg)
-		
+		.Func(_SC("GetTeamIndex"),&SqPlayer::GetTeamIndex)
+		.Func(_SC("ChangeTeam"),&SqPlayer::ChangeTeam)
+		.Func(_SC("GetAbsAngles"),&SqPlayer::GetAbsAngles)
 		//Static functions
 		.StaticFunc(_SC("IndexOfUserId"),&SqPlayer::GetClientOfUserId)
 		.StaticFunc(_SC("IndexOfSerial"),&SqPlayer::GetClientFromSerial)
 		.StaticFunc(_SC("GetMaxClients"),&SqPlayer::GetMaxClients)
 		.StaticFunc(_SC("GetNumPlayers"),&SqPlayer::GetNumPlayers)
 		);
+	//RootTable().Bind(_SC("TestClass"),Class<TestClass>().Func(_SC("Print"),&TestClass::Print));
+	//RootTable().Func(_SC("TestUnload"),&TestUnload);
 }

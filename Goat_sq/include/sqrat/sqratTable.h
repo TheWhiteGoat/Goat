@@ -157,6 +157,23 @@ public:
         sq_pop(v,1); // pop root table
     }
 };
+
+template<>
+struct Var<Table> {
+    Table value;
+    Var(HSQUIRRELVM vm, SQInteger idx) {
+		HSQOBJECT obj;
+		sq_resetobject(&obj);
+		sq_getstackobj(vm,idx,&obj);
+		value = Table(obj);
+    }
+    static void push(HSQUIRRELVM vm, Table value) {
+		HSQOBJECT obj;
+		sq_resetobject(&obj);
+		obj = value.GetObject();
+		sq_pushobject(vm,obj);
+    }
+};
 }
 
 #endif

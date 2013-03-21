@@ -106,6 +106,11 @@ public:
         return *this;
     }
 
+    Class& SetStaticValue(const SQChar* name, int val) {
+        BindValue<int>(name, val, true);
+        return *this;
+    }
+
     /**
         @param name    name of the slot
         @param var    value to assign
@@ -210,6 +215,18 @@ public:
     template<class F>
     Class& StaticFunc(const SQChar* name, F method) {
         BindFunc(name, &method, sizeof(method), SqGlobalFunc(method));
+        return *this;
+    }
+
+    template<class F>
+    Class& GlobalOverload(const SQChar* name, F method) {
+        BindOverload(name, &method, sizeof(method), SqMemberGlobalFunc(method), SqOverloadFunc(method), SqGetArgCount(method));
+        return *this;
+    }
+
+    template<class F>
+    Class& StaticOverload(const SQChar* name, F method) {
+        BindOverload(name, &method, sizeof(method), SqGlobalFunc(method), SqOverloadFunc(method), SqGetArgCount(method));
         return *this;
     }
 
@@ -319,6 +336,7 @@ protected:
     }
 
 };
+
 
 /**
     @tparam    C    class type to expose
